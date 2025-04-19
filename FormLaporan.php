@@ -269,8 +269,8 @@
             <div class="form-group">
                 <label for="jenis_laporan">Jenis Laporan <span class="required">*</span></label>
                 <select name="jenis_laporan" id="jenis_laporan" required>
-                    <option value="jalan_rusak">Jalan Rusak</option>
-                    <option value="jembatan_rusak">Jembatan Rusak</option>
+                    <option value="jalan_rusak">Privat/Rahasia</option>
+                    <option value="jembatan_rusak">Publik</option>
                 </select>
                 <span class="error-message">Kolom wajib diisi</span>
             </div>
