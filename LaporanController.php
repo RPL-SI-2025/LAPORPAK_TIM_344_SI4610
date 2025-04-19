@@ -3,77 +3,64 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Laporan;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class LaporanController extends Controller
 {
-    // Tampilkan semua laporan
-    public function index()
+    public function showForm(Request $request)
     {
-        $laporan = Laporan::all();
-        return view('laporan.index', compact('laporan'));
+        $success = $request->query('success');
+        $errors = $request->query('errors');
+        return view('form-laporan', compact('success', 'errors'));
     }
 
-    // Tampilkan form tambah laporan
-    public function create()
+    public function submitLaporan(Request $request)
     {
-        return view('laporan.create');
-    }
+        // Check if form is completely empty
+        if ($request->except('_token') === []) {
+            return response()->json([
+                'message' => 'Tidak dapat mengirimkan laporan kosong'
+            ], 400);
+        }
 
-    // Simpan laporan baru
-    public function store(Request $request)
-    {
-        $request->validate([
-            'judul' => 'required|string|max:255',
-            'isi' => 'required|string',
-            'status' => 'required|in:proses,selesai',
+        // Check if pernyataan is checked
+        if (!$request->has('pernyataan')) {
+            return response()->json([
+                'message' => 'Ceklis pernyataan persetujuan'
+            ], 400);
+        }
+
+        // Check if bukti laporan is provided
+        if (!$request->hasFile('bukti_laporan')) {
+            return response()->json([
+                'message' => 'Lengkapi bukti kerusakan'
+            ], 400);
+        }
+
+        // Validate required fields
+        $validator = Validator::make($request->all(), [
+            'lokasi_laporan' => 'required',
+            'kategori_laporan' => 'required',
+            'deskripsi_laporan' => 'required',
+            'bukti_laporan' => 'required|file|max:2048', // max 2MB
         ]);
 
-        Laporan::create([
-            'id_user' => auth()->id(),
-            'judul' => $request->judul,
-            'isi' => $request->isi,
-            'status' => $request->status,
-        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Lengkapi kolom yang kosong'
+            ], 400);
+        }
 
-        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil ditambahkan.');
-    }
+        // Store the bukti laporan
+        $file = $request->file('bukti_laporan');
+        $path = $file->store('bukti_laporan', 'public');
 
-    // Tampilkan detail laporan
-    public function show($id)
-    {
-        $laporan = Laporan::findOrFail($id);
-        return view('laporan.show', compact('laporan'));
-    }
+        // Here you would typically save the report to database
+        // For now, we'll just return success response
 
-    // Tampilkan form edit
-    public function edit($id)
-    {
-        $laporan = Laporan::findOrFail($id);
-        return view('laporan.edit', compact('laporan'));
-    }
-
-    // Update laporan
-    public function update(Request $request, $id)
-    {
-        $request->validate([
-            'judul' => 'required|string|max:255',
-            'isi' => 'required|string',
-            'status' => 'required|in:proses,selesai',
-        ]);
-
-        $laporan = Laporan::findOrFail($id);
-        $laporan->update($request->all());
-
-        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil diperbarui.');
-    }
-
-    // Hapus laporan
-    public function destroy($id)
-    {
-        $laporan = Laporan::findOrFail($id);
-        $laporan->delete();
-
-        return redirect()->route('laporan.index')->with('success', 'Laporan berhasil dihapus.');
+        return response()->json([
+            'message' => 'Laporan berhasil dikirim!'
+        ], 200);
     }
 }
