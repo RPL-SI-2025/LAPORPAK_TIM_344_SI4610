@@ -1,54 +1,86 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto px-4 py-6">
-    <div class="flex justify-between items-center mb-6">
-        <h1 class="text-2xl font-bold text-black">Profile</h1>
+<div class="max-w-2xl mx-auto bg-white p-6 rounded shadow">
+    <h2 class="text-2xl font-bold mb-4">Edit Profil</h2>
 
-        <!-- Tombol buka modal -->
-    <button id="openModalBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">Edit Profile
-        </button>
-    </div>
+    @if(session('status') === 'profile-updated')
+        <div class="mb-4 text-green-600">
+            Profil berhasil diperbarui.
+        </div>
+    @endif
 
-    <div class="bg-gray-800 text-white p-6 rounded-lg shadow-md">
-        <p><strong>Name:</strong> {{ Auth::user()->name }}</p>
-        <p><strong>Email:</strong> {{ Auth::user()->email }}</p>
-        <p><strong>Phone:</strong> {{ Auth::user()->phone ?? '-' }}</p>
-    </div>
+    <form action="{{ route('profile.update') }}"
+          method="POST"
+          class="space-y-4"
+    >
+        @csrf
+        @method('PATCH')
+
+        {{-- Nama --}}
+        <div>
+            <label class="block font-medium">Nama</label>
+            <input type="text"
+                   name="name"
+                   value="{{ old('name', $user->name) }}"
+                   class="w-full border px-3 py-2 rounded">
+            @error('name')
+                <p class="text-red-600">{{ $message }}</p>
+            @enderror
+        </div>
+
+        {{-- Email --}}
+        <div>
+            <label class="block font-medium">Email</label>
+            <input type="email"
+                   name="email"
+                   value="{{ old('email', $user->email) }}"
+                   class="w-full border px-3 py-2 rounded">
+            @error('email')
+                <p class="text-red-600">{{ $message }}</p>
+            @enderror
+        </div>
+
+        {{-- Telepon --}}
+        <div>
+            <label class="block font-medium">Telepon</label>
+            <input type="text"
+                   name="phone"
+                   value="{{ old('phone', $user->phone) }}"
+                   class="w-full border px-3 py-2 rounded">
+            @error('phone')
+                <p class="text-red-600">{{ $message }}</p>
+            @enderror
+        </div>
+
+        {{-- Password Baru --}}
+        <div>
+            <label class="block font-medium">
+                Password Baru <span class="text-gray-500">(Opsional)</span>
+            </label>
+            <input type="password"
+                   name="password"
+                   class="w-full border px-3 py-2 rounded">
+            @error('password')
+                <p class="text-red-600">{{ $message }}</p>
+            @enderror
+        </div>
+
+        {{-- Konfirmasi Password --}}
+        <div>
+            <label class="block font-medium">Konfirmasi Password</label>
+            <input type="password"
+                   name="password_confirmation"
+                   class="w-full border px-3 py-2 rounded">
+        </div>
+
+        {{-- Tombol Submit --}}
+        <div>
+            <button type="submit"
+                    class="bg-blue-600 text-black px-4 py-2 rounded hover:bg-blue-700">
+                Simpan Perubahan
+            </button>
+        </div>
+    </form>
 </div>
-
-<!-- MODAL -->
-<div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center hidden">
-    <div class="bg-white w-full max-w-lg p-6 rounded-lg shadow-lg relative">
-        <h2 class="text-xl font-bold mb-4 text-black">Edit Profile</h2>
-
-        <form method="POST" action="{{ route('profile.update') }}">
-            @csrf
-            @method('PATCH')
-
-            <div class="mb-4">
-                <label class="block mb-1 text-black">Name</label>
-                <input type="text" name="name" value="{{ old('name', Auth::user()->name) }}" class="w-full px-3 py-2 rounded border @error('name') border-red-500 @enderror text-black">
-                @error('name')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="mb-4">
-                <label class="block mb-1 text-black">Email</label>
-                <input type="email" name="email" value="{{ old('email', Auth::user()->email) }}" class="w-full px-3 py-2 rounded border @error('email') border-red-500 @enderror text-black">
-                @error('email')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="mb-4">
-                <label class="block mb-1 text-black">Phone</label>
-                <input type="text" name="phone" value="{{ old('phone', Auth::user()->phone) }}" class="w-full px-3 py-2 rounded border @error('phone') border-red-500 @enderror text-black">
-                @error('phone')
-                    <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-                @enderror
-            </div>
-
-            <div class="mb-4">
-                <label class="block mb-1 text-black">Password <small>(kosongkan jika
+@endsection
