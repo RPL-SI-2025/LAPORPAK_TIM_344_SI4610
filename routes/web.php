@@ -25,7 +25,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/form-laporan', [LaporanController::class, 'showForm'])->name('form.laporan');
+// Route untuk form laporan (di luar middleware auth jika tidak perlu login)
+Route::get('/form-laporan', [LaporanController::class, 'showForm'])->name('form_laporan');
 Route::post('/submit-laporan', [LaporanController::class, 'submitLaporan'])->name('submit.laporan');
 
 require __DIR__.'/auth.php';
