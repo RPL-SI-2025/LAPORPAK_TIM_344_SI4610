@@ -44,7 +44,7 @@ class ReportSeeder extends Seeder
             'user_id' => $user->id,
             'nomor_laporan' => 'LAP456789',
             'judul' => 'Laporan Test 4',
-            'status' => 'Ditanggapi'
+            'status' => 'Ditolak'
         ]);
 
         Report::factory()->create([
@@ -52,6 +52,13 @@ class ReportSeeder extends Seeder
             'nomor_laporan' => 'LAP567890',
             'judul' => 'Laporan Test 5',
             'status' => 'Selesai'
+        ]);
+
+        Report::factory()->create([
+            'user_id' => $user->id,
+            'nomor_laporan' => 'LAP678912',
+            'judul' => 'Laporan Test 6',
+            'status' => 'Ditanggapi'
         ]);
     }
 }

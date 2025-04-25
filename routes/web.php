@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\TrackReportController;
 
 // Public routes
 Route::get('/', function () {
@@ -11,19 +12,17 @@ Route::get('/', function () {
 })->name('welcome');
 
 // Report tracking routes (public)
-Route::get('/lacak-laporan', [ReportController::class, 'index'])->name('lacak-laporan');
+// Halaman untuk form pelacakan laporan
+Route::get('/lacak-laporan', [TrackReportController::class, 'showTrackPage'])->name('lacak-laporan');
 
 // Define the route for searching the report by nomor_laporan
-Route::post('/report/search', [ReportController::class, 'search'])->name('report.search');
 
 // Define the route to show report details by nomor_laporan
 Route::get('/report/{nomor_laporan}', [ReportController::class, 'show'])->name('report.show');
 
-// Halaman untuk form pelacakan laporan
-Route::get('/lacak-laporan', [TrackReportController::class, 'showTrackPage'])->name('lacak-laporan');
 
 // Proses pencarian laporan
-Route::post('/report/search', [TrackReportController::class, 'searchReport'])->name('report.search');
+Route::post('/report/search', [TrackReportController::class, 'search'])->name('report.search');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {

@@ -39,23 +39,43 @@ class Report extends Model
 
     public function getStatusBadgeClassAttribute(): string
     {
-        return match($this->status) {
+        $map = [
             'Diajukan' => 'bg-gray-100 text-gray-800',
             'Diproses' => 'bg-yellow-100 text-yellow-800',
-            'Ditindaklanjuti' => 'bg-blue-100 text-blue-800',
+            'Diterima' => 'bg-green-100 text-green-800',
+            'Ditolak' => 'bg-red-100 text-red-800',
+            'Ditindaklanjuti' => 'bg-yellow-100 text-yellow-800',
+            'Ditanggapi' => 'bg-yellow-100 text-yellow-800',
             'Selesai' => 'bg-green-100 text-green-800',
-            default => 'bg-gray-100 text-gray-800',
-        };
+        ];
+        return $map[$this->status] ?? 'bg-gray-100 text-gray-800';
     }
 
     public function getStatusLabelAttribute(): string
     {
-        return match($this->status) {
-            'Diajukan' => 'Laporan Diterima',
+        $map = [
+            'Diajukan' => 'Diajukan',
             'Diproses' => 'Proses Verifikasi',
-            'Ditindaklanjuti' => 'Proses Tindak Lanjut',
+            'Diterima' => 'Laporan Anda Disetujui',
+            'Ditindaklanjuti' => 'Proses Tindak lanjut',
+            'Ditanggapi' => 'Beri Tanggapan',
             'Selesai' => 'Selesai',
-            default => 'Tidak Diketahui',
-        };
+            'Ditolak' => 'Laporan Ditolak',
+        ];
+        return $map[$this->status] ?? $this->status;
+    }
+
+    public function getStatusDeskripsiAttribute(): string
+    {
+        $map = [
+            'Diajukan' => 'Laporan Diajukan',
+            'Diproses' => 'Proses Verifikasi',
+            'Diterima' => 'Laporan Disetujui',
+            'Ditolak' => 'Laporan Ditolak',
+            'Ditindaklanjuti' => 'Proses Tindak Lanjut',
+            'Ditanggapi' => 'Beri Tanggapan',
+            'Selesai' => 'Selesai',
+        ];
+        return $map[$this->status] ?? 'Tidak Diketahui';
     }
 }

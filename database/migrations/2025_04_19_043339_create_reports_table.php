@@ -13,7 +13,7 @@ return new class extends Migration
         $table->string('nomor_laporan')->unique();
         $table->string('judul');
         $table->text('deskripsi')->nullable();
-        $table->enum('status', ['Diajukan', 'Diproses', 'Ditindaklanjuti', 'Ditanggapi', 'Selesai'])->default('Diajukan');
+        $table->enum('status', ['Diajukan', 'Diproses', 'Diterima', 'Ditolak', 'Ditindaklanjuti', 'Ditanggapi', 'Selesai'])->default('Diajukan');
         $table->foreignId('user_id')->constrained()->onDelete('cascade');
         $table->timestamps();
     });

@@ -39,13 +39,15 @@ class ReportController extends Controller
             'Diajukan' => 'Diajukan',           // Just submitted
             'Diproses' => 'Diproses',           // Being processed
             'Ditindaklanjuti' => 'Ditindaklanjuti', // In progress
+            'Diterima' => 'Diterima',           // Accepted/Approved
+            'Ditolak' => 'Ditolak',             // Rejected
             'Selesai' => 'Selesai'              // Completed
         ];
 
         $report->status = $statusMap[$report->status] ?? 'Diajukan';
         
         // Return the report details
-        return view('reports.detail', ['report' => $report]);
+        return view('track-report.result', ['report' => $report]);
     }
 
     // Menampilkan detail status laporan
@@ -57,6 +59,6 @@ class ReportController extends Controller
             return redirect()->route('lacak-laporan')->with('error', 'Laporan tidak ditemukan');
         }
 
-        return view('reports.detail', compact('report'));
+        return view('track-report.result', compact('report'));
     }
 }

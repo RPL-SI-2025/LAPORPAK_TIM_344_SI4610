@@ -68,4 +68,27 @@ class LacakLaporanTest extends TestCase
         $response->assertRedirect();
         $response->assertSessionHas('error', 'Nomor laporan tidak ditemukan');
     }
+
+    /** @test */
+    public function can_view_report_detail_with_valid_number()
+    {
+        $report = Report::factory()->create([
+            'nomor_laporan' => 'LAP123456',
+        ]);
+        $this->assertDatabaseHas('reports', [
+            'nomor_laporan' => 'LAP123456'
+        ]);
+        $response = $this->get(route('report.show', ['nomor_laporan' => 'LAP123456']));
+        $response->assertStatus(200);
+        $response->assertViewIs('reports.detail');
+        $response->assertSee('LAP123456');
+    }
+
+    /** @test */
+    public function view_report_detail_with_invalid_number_redirects_with_error()
+    {
+        $response = $this->get(route('report.show', ['nomor_laporan' => 'TIDAKADA']));
+        $response->assertRedirect(route('lacak-laporan'));
+        $response->assertSessionHas('error', 'Laporan tidak ditemukan');
+    }
 }
