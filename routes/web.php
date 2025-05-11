@@ -2,45 +2,63 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\ReportController;
+use App\Http\Controllers\Admin\LaporanController;
+use App\Http\Controllers\LaporanPublikController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\TrackReportController;
+use App\Http\Controllers\LandingController;
+use App\Http\Controllers\StatistikController;
+use App\Http\Controllers\Admin\FaqController;
+use App\Http\Controllers\ProfileController;
 
-// Public routes
-Route::get('/', function () {
-    return view('welcome');
-})->name('welcome');
+// Landing page
+Route::get('/', [LandingController::class, 'index'])->name('landing');
 
-// Report tracking routes (public)
-// Halaman untuk form pelacakan laporan
-Route::get('/lacak-laporan', [TrackReportController::class, 'showTrackPage'])->name('lacak-laporan');
+// Public FAQ
+Route::get('/faq', [FaqController::class, 'publicIndex'])->name('faq');
 
-// Define the route for searching the report by nomor_laporan
+// Public laporan submission
+Route::post('/lapor', [LaporanPublikController::class, 'submit'])->name('submit.laporan');
+Route::get('/laporan/masuk', [LaporanPublikController::class, 'index'])->name('laporan.masuk');
 
-// Define the route to show report details by nomor_laporan
-Route::get('/report/{nomor_laporan}', [ReportController::class, 'show'])->name('report.show');
+// Statistik
+//Route::get('/statistik', [StatistikController::class, 'index'])->name('statistik');
 
+// Tracking routes
+Route::get('/track', [TrackReportController::class, 'showTrackPage'])->name('track.show');
+Route::post('/track/search', [TrackReportController::class, 'search'])->name('track.search');
 
-// Proses pencarian laporan
-Route::post('/report/search', [TrackReportController::class, 'search'])->name('report.search');
+// Authenticated Routes
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/user', [DashboardController::class, 'user'])->name('user.dashboard');
 
-Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', function () {
-        if (auth()->user()->role === 'admin') {
-            return redirect()->route('admin.dashboard');
-        }
-        return view('dashboard.user');
-    })->name('dashboard');
-
-    // Admin routes
-    Route::get('/dashboard/admin', [DashboardController::class, 'admin'])
-        ->middleware('admin')
-        ->name('admin.dashboard');
-
-    // Profile routes
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    // Profile Page (user only)
+    Route::get('/profile', function () {
+        return view('profile.profil');
+    })->name('profile.index');
+    Route::get('/profile/show', function () {
+        return redirect()->route('profile.index');
+    })->name('profile.show');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Admin Routes
+    Route::middleware(['auth', 'verified'])->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
+        Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan.index');
+        Route::get('/laporan/{laporan}', [LaporanController::class, 'detail'])->name('laporan.detail');
+        Route::put('/laporan/{laporan}/status', [LaporanController::class, 'updateStatus'])->name('laporan.updateStatus');
+        Route::get('/pengguna', [UserController::class, 'index'])->name('user.index');
+        Route::post('/pengguna/{id}/update-status', [UserController::class, 'updateStatus'])->name('user.updateStatus');
+        // FAQ Routes
+        Route::resource('faq', \App\Http\Controllers\Admin\FaqController::class);
+    });
+
+    // Form laporan
+    Route::get('/lapor', function () {
+        return view('profile.form_laporan');
+    })->name('profile.form_laporan');
 });
 
 require __DIR__.'/auth.php';
