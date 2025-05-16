@@ -28,7 +28,7 @@
                                  class="rounded-circle"
                                  style="width: 32px; height: 32px; object-fit: cover;">
                         @else
-                            <img src="{{ asset('assets/img/default-avatar.png') }}" 
+                            <i class="fas fa-user-circle fa-lg" style="color: #6c757d;"></i>
                                  alt="Profile" 
                                  class="rounded-circle"
                                  style="width: 32px; height: 32px; object-fit: cover;">
@@ -38,7 +38,7 @@
                     <ul class="dropdown-menu dropdown-menu-end">
                         <li>
                             <a class="dropdown-item d-flex align-items-center gap-2" 
-                               href="{{ route('profile.form_laporan') }}">
+                               href="{{ route('profile.index') }}">
                                 <i class="bi bi-person"></i>
                                 Profile
                             </a>
