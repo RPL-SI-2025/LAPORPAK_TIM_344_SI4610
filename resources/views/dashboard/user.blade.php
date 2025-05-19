@@ -149,7 +149,7 @@
           <div class="col-lg-4" data-aos="zoom-in" data-aos-delay="200">
             <div class="card-kategori text-center shadow">
               <i class="bi bi-graph-up text-purple"></i>
-              <h5><a href="#">Laporan Masuk &amp; Selesai &gt;</a></h5>
+              <h5><a href="{{ route('user.laporan.ringkasan') }}">Laporan Masuk &amp; Selesai &gt;</a></h5>
               <p>Data Laporan Masuk Tahun 2025</p>
             </div>
           </div>

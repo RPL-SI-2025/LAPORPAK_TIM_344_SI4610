@@ -11,8 +11,6 @@
                 <a href="{{ route('dashboard') }}" class="text-decoration-none text-dark fw-semibold {{ request()->routeIs('dashboard') ? 'active' : '' }}">
                     <i class="bi bi-bell"></i> Notifikasi
                 </a>
-                <a href="{{ route('admin.petugas.laporan-tugas.index') }}" class="text-decoration-none text-success fw-semibold {{ request()->routeIs('admin.petugas.laporan-tugas.index') ? 'active' : '' }}">
-                    <i class="bi bi-clipboard-check"></i> Tugas Laporan
                 </a>
                 <a href="{{ route('landing') }}" class="text-decoration-none text-dark fw-semibold {{ request()->routeIs('landing') ? 'active' : '' }}">Beranda</a>
                 <a href="{{ asset('about.html') }}" class="text-decoration-none text-dark fw-semibold">FAQ</a>
@@ -31,10 +29,10 @@
                                  class="rounded-circle"
                                  style="width: 32px; height: 32px; object-fit: cover;">
                         @else
-                            <i class="fas fa-user-circle fa-lg" style="color: #6c757d;"></i>
+                            <i class="fas fa-user-circle fa-lg" style="color: #6c757d;"
                                  alt="Profile" 
                                  class="rounded-circle"
-                                 style="width: 32px; height: 32px; object-fit: cover;">
+                                 style="width: 32px; height: 32px; object-fit: cover;"> </i>
                         @endif
                         <span class="fw-semibold">{{ auth()->user()->name }}</span>
                     </button>

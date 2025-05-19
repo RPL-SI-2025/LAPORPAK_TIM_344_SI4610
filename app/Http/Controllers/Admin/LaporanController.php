@@ -91,6 +91,6 @@ class LaporanController extends Controller
 
     public function show(Laporan $laporan)
     {
-        return view('admin.laporan.show', compact('laporan'));
+        return view('admin.laporan.index', compact('laporan'));
     }
 }

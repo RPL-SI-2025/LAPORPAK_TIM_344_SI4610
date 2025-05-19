@@ -10,6 +10,8 @@ use App\Http\Controllers\TrackReportController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\StatistikController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserLaporanController;
+
 
 // -----------------------------
 // 🔹 Public Routes
@@ -18,6 +20,7 @@ use App\Http\Controllers\ProfileController;
 // Landing page
 Route::get('/', [LandingController::class, 'index'])->name('landing');
 
+Route::get('/user/laporan/ringkasan', [UserLaporanController::class, 'ringkasan'])->name('user.laporan.ringkasan');
 // Public laporan submission
 Route::post('/lapor', [LaporanPublikController::class, 'submit'])->name('submit.laporan');
 Route::get('/laporan/masuk', [LaporanPublikController::class, 'index'])->name('laporan.masuk');
