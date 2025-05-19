@@ -34,34 +34,49 @@
       </nav>
       @auth
       @if(auth()->user()->role === 'user')
-      <div class="position-absolute end-0 top-0 m-3" style="z-index:10;">
-        <div class="dropdown">
-          <button class="btn btn-light dropdown-toggle d-flex align-items-center gap-2" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-            @if(auth()->user()->profile_picture)
-              <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}" alt="Profile" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
-            @else
-              <img src="{{ asset('assets/img/default-avatar.png') }}" alt="Profile" class="rounded-circle" style="width: 32px; height: 32px; object-fit: cover;">
-            @endif
-            <span class="fw-semibold">{{ auth()->user()->name }}</span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-            <li><a class="dropdown-item d-flex align-items-center gap-2" href="{{ route('profile.index') }}"><i class="bi bi-person"></i> Profile</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li>
-              <form method="POST" action="{{ route('logout') }}">
-                @csrf
-                <button type="submit" class="dropdown-item d-flex align-items-center gap-2 text-danger"><i class="bi bi-box-arrow-right"></i> Logout</button>
-              </form>
-            </li>
-          </ul>
-        </div>
-      </div>
+      <!-- User Profile Dropdown -->
+                <div class="dropdown">
+                    <button class="btn dropdown-toggle d-flex align-items-center gap-2" 
+                            type="button" 
+                            data-bs-toggle="dropdown" 
+                            aria-expanded="false"
+                            style="color: #d5d5d5;">
+                        @if(auth()->user()->profile_picture)
+                            <img src="{{ asset('storage/' . auth()->user()->profile_picture) }}" 
+                                 alt="Profile" 
+                                 class="rounded-circle"
+                                 style="width: 32px; height: 32px; object-fit: cover;">
+                        @else
+                            <i class="fas fa-user-circle fa-lg" style="color: #d0d0d0;"
+                                 alt="Profile" 
+                                 class="rounded-circle"
+                                 style="width: 32px; height: 32px; object-fit: cover;"> </i>
+                        @endif
+                        <span class="fw-semibold">{{ auth()->user()->name }}</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a class="dropdown-item d-flex align-items-center gap-2" 
+                               href="href={{ route('profile.index') }}">
+                                <i class="bi bi-person"></i>
+                                Profile
+                            </a>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+                                <button type="submit" 
+                                        class="dropdown-item d-flex align-items-center gap-2 text-danger">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    Logout
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
       @endif
       @endauth
-      <div class="ms-3">
-        <span class="text-dark fw-bold"><i class="bi bi-person-circle me-1"></i> {{ Auth::user()->name }}</span>
-      </div>
-    </div>
   </header>
   <main class="main">
     <!-- Hero Section mirip landing -->
