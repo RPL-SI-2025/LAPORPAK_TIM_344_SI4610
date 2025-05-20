@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Umpan Balik - LaporPak</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #f9fafb;
+      color: #1f2937;
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background-color: #fff;
+      padding: 30px 20px;
+      height: 100vh;
+      border-right: 1px solid #e5e7eb;
+      position: fixed;
+      left: 0;
+      top: 0;
+    }
+
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: #3b82f6;
+      margin-bottom: 40px;
+    }
+
+    .menu {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu li {
+      margin-bottom: 20px;
+    }
+
+    .menu a {
+      text-decoration: none;
+      color: #374151;
+      font-size: 15px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      padding: 10px 12px;
+      border-radius: 8px;
+    }
+
+    .menu a.active {
+      background-color: #facc15;
+      color: #000;
+      font-weight: 600;
+    }
+
+    /* Top Bar */
+    .topbar {
+      position: fixed;
+      left: 220px;
+      top: 0;
+      right: 0;
+      height: 70px;
+      background-color: white;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 40px;
+      z-index: 10;
+    }
+
+    .search-bar input {
+      padding: 10px 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 9999px;
+      font-size: 14px;
+      width: 280px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .notif {
+      position: relative;
+      cursor: pointer;
+    }
+
+    .notif::after {
+      content: "6";
+      position: absolute;
+      top: -6px;
+      right: -6px;
+      background-color: red;
+      color: white;
+      font-size: 10px;
+      font-weight: bold;
+      border-radius: 50%;
+      padding: 2px 5px;
+    }
+
+    .language {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .language img {
+      width: 20px;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .profile img {
+      width: 36px;
+      border-radius: 999px;
+    }
+
+    .profile span {
+      font-size: 14px;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.2;
+    }
+
+    .profile span small {
+      font-size: 12px;
+      color: #6b7280;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 220px;
+      margin-top: 70px;
+      padding: 40px 60px;
+      overflow-y: auto;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: bold;
+      margin-bottom: 8px;
+    }
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 32px 0 8px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    th, td {
+      padding: 16px;
+      text-align: left;
+      font-size: 14px;
+      border-bottom: 1px solid #e5e7eb;
+      vertical-align: middle;
+    }
+
+    th {
+      background-color: #f3f4f6;
+      font-weight: 600;
+    }
+
+    .upload-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      background-color: #fff;
+      border: 1.5px solid #000;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .upload-btn:hover {
+      background-color: #f0f0f0;
+    }
+
+    .upload-btn .icon {
+      width: 16px;
+      height: 16px;
+    }
+
+    .status-blue {
+      color: #3b82f6;
+      font-weight: 500;
+    }
+
+    .status-red {
+      color: #ef4444;
+      font-weight: 500;
+    }
+
+    .btn-view {
+      font-size: 20px;
+      color: #ef4444;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .img-preview {
+      width: 60px;
+      border-radius: 8px;
+    }
+
+    .desc-text {
+      max-width: 280px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">Lapor<span style="color:#000;">Pak</span></div>
+    <ul class="menu">
+      <li><a href="#">Dashboard</a></li>
+      <li><a href="#">Laporan</a></li>
+      <li><a href="#" class="active">Umpan Balik</a></li>
+      <li><a href="#">Pengguna</a></li>
+      <li><a href="#">Petugas</a></li>
+      <li><a href="#">Logout</a></li>
+    </ul>
+  </aside>
+
+  <!-- Top Bar -->
+  <header class="topbar">
+    <div class="search-bar">
+      <input type="text" placeholder="Search" />
+    </div>
+    <div class="topbar-right">
+      <div class="notif">🔔</div>
+      <div class="language">
+        <img src="https://flagcdn.com/gb.svg" alt="English"/>
+        English ▾
+      </div>
+      <div class="profile">
+        <img src="https://i.pravatar.cc/100?img=5" alt="User">
+        <span>Moni Roy<br><small>Admin</small></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h1>Umpan Balik</h1>
+
+    <h2>Belum Diupload</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Gambar Perbaikan</th>
+          <th>Kategori</th>
+          <th>Lokasi</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <button class="upload-btn">
+              <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12"/>
+              </svg> Upload Foto
+            </button>
+          </td>
+          <td>Jalan Rusak</td>
+          <td>Jalan KananKiri no 16, Kec.Batu, Kab. Banndung, Indonesia</td>
+          <td class="status-blue">Selesai</td>
+          <td><button class="btn-view">➤</button></td>
+        </tr>
+        <tr>
+          <td>
+            <button class="upload-btn">
+              <svg class="icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5-5m0 0l5 5m-5-5v12"/>
+              </svg> Upload Foto
+            </button>
+          </td>
+          <td>Jalan Rusak</td>
+          <td>Jalan Ahmad Yani no 19, Kota Bandung, Jawa Barat</td>
+          <td class="status-red">Perlu Waktu Tambahan</td>
+          <td><button class="btn-view">➤</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Selesai</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Gambar Perbaikan</th>
+          <th>Kategori</th>
+          <th>Nilai</th>
+          <th>Tanggal</th>
+          <th>Deskripsi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><img class="img-preview" src="D:\downloads\jalan2.jpeg" alt="Jalan"/></td>
+          <td>Jalan Rusak</td>
+          <td>4/5</td>
+          <td>12.09.2019</td>
+          <td class="desc-text">Perbaikan selesai dengan baik dan jalan sudah dapat digunakan kembali.</td>
+        </tr>
+        <tr>
+          <td><img class="img-preview" src="D:\downloads\jalan2.jpeg" alt="Trotoar"/></td>
+          <td>Trotoar</td>
+          <td>5/5</td>
+          <td>20.11.2022</td>
+          <td class="desc-text">Trotoar telah diperbaiki dan akses pejalan kaki menjadi lebih aman.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>
