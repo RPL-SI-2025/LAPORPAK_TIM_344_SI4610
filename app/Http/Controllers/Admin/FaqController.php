@@ -54,7 +54,7 @@ class FaqController extends Controller
         return view('admin.faq.edit', compact('faq'));
     }
 
-    public function update(Request $request, Faq $faq)
+    public function update(Request $request, Faq $faqs)
     {
         $validated = $request->validate([
             'question' => 'required|string|max:255',
@@ -62,13 +62,13 @@ class FaqController extends Controller
             'status' => 'boolean'
         ]);
 
-        $faq->update($validated);
+        $faqs->update($validated);
         return redirect()->route('admin.faq.index')->with('success', 'FAQ updated successfully');
     }
 
-    public function destroy(Faq $faq)
+    public function destroy(Faq $faqs)
     {
-        $faq->delete();
+        $faqs->delete();
         return redirect()->route('admin.faq.index')->with('success', 'FAQ deleted successfully');
     }
 }

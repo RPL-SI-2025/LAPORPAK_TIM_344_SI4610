@@ -19,7 +19,7 @@
             <form id="faqForm" action="{{ route('admin.faq.update', $faq->id) }}" method="POST">
                 @csrf
                 @method('PUT')
-                <div style="margin-bottom:24px;">
+                <div style="margin-bottom:18px;">
                     <label for="question" style="display:block; font-family:'Poppins', 'Roboto', Arial, sans-serif; font-weight:600; font-size:1.1rem; color:#444; margin-bottom:8px;">
                         Pertanyaan
                     </label>
@@ -36,14 +36,14 @@
                         <div class="invalid-feedback" style="color:#dc3545;">{{ $message }}</div>
                     @enderror
                 </div>
-                <div style="margin-bottom:24px;">
+                <div style="margin-bottom:18px;">
                     <label for="answer" style="display:block; font-family:'Poppins', 'Roboto', Arial, sans-serif; font-weight:600; font-size:1.1rem; color:#444; margin-bottom:6px;">
                         Jawaban
                     </label>
                     <textarea
                         name="answer"
                         id="answer"
-                        rows="9"
+                        rows="4"
                         required
                         style="width:100%; border:2px solid #FFB84C; border-radius:10px; padding:14px 12px; font-size:1rem; font-family:'Poppins', 'Roboto', Arial, sans-serif; color:#333; background:#fff; resize:vertical; box-sizing:border-box;"
                         placeholder="Contoh: LaporPak adalah platform digital yang memungkinkan masyarakat untuk melaporkan keluhan, saran, atau pelanggaran terkait layanan publik secara cepat dan transparan. Pengguna hanya perlu mengisi formulir pelaporan yang tersedia, melengkapi bukti pendukung jika diperlukan, lalu sistem akan menyalurkan laporan tersebut ke instansi terkait untuk ditindaklanjuti."
