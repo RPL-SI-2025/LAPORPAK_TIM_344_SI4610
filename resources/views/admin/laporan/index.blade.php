@@ -70,6 +70,13 @@
                                         <a href="{{ route('admin.laporan.detail', $laporan->nomor_laporan) }}" class="btn btn-warning btn-sm text-white" style="background: #fbb03b; border: none; font-weight: 600;">
                                             Detail
                                         </a>
+                                        @if(in_array($laporan->status, ['ditolak', 'selesai']))
+                                            <form action="{{ route('admin.laporan.destroy', $laporan->id) }}" method="POST" style="display:inline-block;" onsubmit="return confirm('Yakin ingin menghapus laporan ini?');">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger btn-sm" style="font-weight:600;">Hapus</button>
+                                            </form>
+                                        @endif
                                     </td>
                                 </tr>
                                 @endforeach

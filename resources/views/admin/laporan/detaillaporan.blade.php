@@ -42,6 +42,16 @@
                                         </form>
                                     </td>
                                 </tr>
+                                @if($laporan->laporanPetugas->count())
+                                <tr>
+                                    <th class="text-secondary">Kondisi Lapangan</th>
+                                    <td>
+                                        @foreach($laporan->laporanPetugas as $petugas)
+                                            <div>{{ $petugas->kondisi_lapangan }}</div>
+                                        @endforeach
+                                    </td>
+                                </tr>
+                                @endif
                                 @if($laporan->bukti_laporan)
                                 <tr>
                                     <th class="text-secondary align-top">Bukti Laporan</th>

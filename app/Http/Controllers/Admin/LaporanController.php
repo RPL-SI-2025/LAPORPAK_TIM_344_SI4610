@@ -85,7 +85,9 @@ class LaporanController extends Controller
 
     public function detail($nomor_laporan)
     {
-        $laporan = Laporan::with('user')->where('nomor_laporan', $nomor_laporan)->firstOrFail();
+        $laporan = Laporan::with(['user', 'laporanPetugas' => function($q) {
+            $q->latest('updated_at')->limit(1);
+        }])->where('nomor_laporan', $nomor_laporan)->firstOrFail();
         return view('admin.laporan.detaillaporan', compact('laporan'));
     }
 

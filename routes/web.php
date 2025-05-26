@@ -56,6 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // 🔐 Admin Routes (Prefix & Name: admin.)
     // -----------------------------
     Route::prefix('admin')->name('admin.')->group(function () {
+    Route::resource('laporan', App\Http\Controllers\Admin\LaporanController::class)->except(['create', 'store', 'edit', 'update', 'show']);
 
 // Route untuk halaman tugas laporan petugas
 Route::prefix('petugas')->name('petugas.')->group(function () {
