@@ -14,22 +14,16 @@ class UserFeedbackTest extends DuskTestCase
     /** @test */
     public function user_can_submit_feedback_after_report_completed()
     {
-        // Membuat user dummy untuk login
-        $user = User::factory()->create([
-            'email' => 'user@gmail.com',
-            'password' => bcrypt('passworduser'), // Pastikan sesuai dengan input login
-        ]);
-
-        $this->browse(function (Browser $browser) use ($user) {
-            $browser->visit('/login')
-                ->type('email', $user->email)
-                ->type('password', 'passworduser')
-                ->press('Masuk')
-                ->pause(2000)
+        
+        $this->browse(function (Browser $browser) {
+        $user = \App\Models\User::where('email','user@gmail.com')->first();
+            $browser
+                ->loginAs($user)
+                ->visit('/dashboard/user')
                 ->assertPathIs('/dashboard/user')
                 ->pause(2000)
                 ->press('Notifikasi')
-                ->pause(10000);
+                ->pause(2000);
 
             // Tambahkan langkah lanjutan sesuai dengan pengujian feedback
             // Contoh (opsional, sesuaikan dengan aplikasi kamu):
