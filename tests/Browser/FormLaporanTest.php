@@ -26,6 +26,7 @@ class FormLaporanTest extends DuskTestCase
             $browser->press('Kirim')
                 ->pause(1200)
                 ->assertSee('Tidak Dapat Mengirimkan Laporan Kosong')
+                ->pause(1200)
                 ->refresh()
                 ->pause(1500);
         });
@@ -51,6 +52,7 @@ class FormLaporanTest extends DuskTestCase
                 ->press('Kirim')
                 ->pause(1200)
                 ->assertSee('Lengkapi Bukti Kerusakan')
+                ->pause(1200)
                 ->refresh()
                 ->pause(1500);
         });
@@ -75,6 +77,7 @@ class FormLaporanTest extends DuskTestCase
                 ->press('Kirim')
                 ->pause(1200)
                 ->assertSee('Lengkapi Kolom yang Kosong')
+                ->pause(1200)
                 ->refresh()
                 ->pause(1500);
         });
@@ -99,6 +102,7 @@ class FormLaporanTest extends DuskTestCase
                 ->press('Kirim')
                 ->pause(1200)
                 ->assertSee('Ceklis Pernyataan')
+                ->pause(1200)
                 ->refresh()
                 ->pause(1500);
         });
@@ -128,6 +132,7 @@ class FormLaporanTest extends DuskTestCase
                     $modal->assertSee('Laporan berhasil dikirim!');
                     $modal->script("document.querySelector('.swal2-confirm').click();");
                 })
+                ->pause(1200)
                 ->waitUntilMissing('.swal2-container', 5)
                 ->refresh()
                 ->pause(1500);
