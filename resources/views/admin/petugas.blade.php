@@ -4,7 +4,7 @@
 <div class="container-fluid py-4">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="fw-bold">Petugas</h2>
-        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPetugasModal">Tambahkan Petugas Baru +</button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addPetugasModal" dusk="open-tambah-petugas-modal">Tambahkan Petugas Baru +</button>
     </div>
     @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -27,7 +27,7 @@
                     <h5 class="fw-bold mb-0">{{ $item->nama }}</h5>
                     <div class="mb-2 text-muted">{{ $item->kontak ?? '-' }}</div>
                     <div class="d-flex justify-content-center gap-2">
-    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#kirimPetugasModal{{ $item->id }}">Kirim Petugas</button>
+    <button class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#kirimPetugasModal{{ $item->id }}" dusk="kirim-petugas-btn-{{ $item->id }}">Kirim Petugas</button>
     <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editPetugasModal{{ $item->id }}">Edit</button>
     <form action="{{ route('admin.petugas.destroy', $item->id) }}" method="POST" onsubmit="return confirm('Hapus petugas ini?')">
         @csrf
@@ -54,7 +54,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-          <button type="submit" class="btn btn-success">Kirim</button>
+          <button type="submit" class="btn btn-success" dusk="kirim-tugas-submit">Kirim</button>
         </div>
       </form>
     </div>
@@ -103,7 +103,7 @@
     </div>
 
     <!-- Add Modal -->
-    <div class="modal fade" id="addPetugasModal" tabindex="-1" aria-labelledby="addPetugasModalLabel" aria-hidden="true">
+    <div class="modal fade" id="addPetugasModal" tabindex="-1" aria-labelledby="addPetugasModalLabel" aria-hidden="true" dusk="modal-tambah-petugas">
       <div class="modal-dialog">
         <div class="modal-content">
           {{-- Tampilkan error validasi jika ada --}}
@@ -138,7 +138,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-              <button type="submit" class="btn btn-primary">Tambah</button>
+              <button type="submit" class="btn btn-primary" dusk="submit-tambah-petugas">Tambah</button>
             </div>
           </form>
         </div>

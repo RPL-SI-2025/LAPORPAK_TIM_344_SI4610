@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('layouts.adminlayout')
 
 @section('title', 'Tambah Bukti Feedback')
 

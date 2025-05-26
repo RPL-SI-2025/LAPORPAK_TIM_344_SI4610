@@ -79,6 +79,9 @@ Route::prefix('petugas')->name('petugas.')->group(function () {
             ->except(['show'])
             ->parameters(['petugas' => 'petugas']);
 
+        // CRUD Feedback (Admin)
+        Route::resource('feedback', App\Http\Controllers\Admin\FeedbackController::class)->except(['show']);
+
         // Route pemberian tugas laporan ke petugas
         Route::post('petugas/{petugas}/kirim-laporan', [\App\Http\Controllers\Admin\PetugasLaporanController::class, 'store'])->name('petugas-laporan.store');
     });

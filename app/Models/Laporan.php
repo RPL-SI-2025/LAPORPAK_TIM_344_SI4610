@@ -32,4 +32,10 @@ class Laporan extends Model
     {
         return $this->hasMany(\App\Models\LaporanPetugas::class, 'laporan_id', 'id');
     }
+
+    // Relasi ke feedback (hasOne)
+    public function feedback()
+    {
+        return $this->hasOne(\App\Models\Feedback::class, 'laporan_id');
+    }
 }
