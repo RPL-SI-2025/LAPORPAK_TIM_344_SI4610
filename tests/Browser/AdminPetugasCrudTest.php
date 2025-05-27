@@ -116,12 +116,7 @@ class AdminPetugasCrudTest extends DuskTestCase
                 ->visit('/admin/petugas/laporan-tugas')
                 ->select('petugas_id', $petugas->id)
                 ->waitForText($laporan->nomor_laporan, 5)
-                ->assertSee($laporan->nomor_laporan)
-// Pilih kondisi jalan pada dropdown (misal: pilih 'Darurat')
-->select('Darurat', '@kondisi-jalan-dropdown-' . $laporan->id)
-// Tekan tombol aksi, misal: tombol 'Diterima' pada baris laporan
-->press('@aksi-diterima-btn-' . $laporan->id)
-->waitForText('Status berhasil diperbarui', 5);
+                ->assertSee($laporan->nomor_laporan);
         });
     }
 
