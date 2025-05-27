@@ -1,7 +1,7 @@
 <?php
 
 namespace Tests\Browser;
-
+use App\Models\Laporan;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 
@@ -108,29 +108,33 @@ class FormLaporanTest extends DuskTestCase
      * Test laporan berhasil dibuat
      */
     public function test_laporan_berhasil_dibuat()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->select('jenis_laporan', 'Publik')
-                ->pause(1000)
-                ->type('lokasi_laporan', 'Jl. Contoh')
-                ->pause(1000)
-                ->select('kategori_laporan', 'Jalan Rusak')
-                ->pause(1000)
-                ->type('deskripsi_laporan', 'Ada jalan rusak di sini')
-                ->pause(1000)
-                ->attach('bukti_laporan', realpath(base_path('tests/Browser/dummy.jpg')))
-                ->waitUntilMissing('.swal2-container', 5)
-                ->pause(1200)
-                ->check('input#ceklis')
-                ->press('Kirim')
-                ->waitFor('.swal2-container', 5)
-                ->whenAvailable('.swal2-container', function ($modal) {
-                    $modal->assertSee('Laporan berhasil dikirim!');
-                    $modal->script("document.querySelector('.swal2-confirm').click();");
-                })
-                ->waitUntilMissing('.swal2-container', 5)
-                ->refresh()
-                ->pause(1500);
-        });
-    }
-} 
+{
+    $this->browse(function (Browser $browser) {
+        $browser->select('jenis_laporan', 'Publik')
+            ->pause(1000)
+            ->type('lokasi_laporan', 'Jl. Contoh')
+            ->pause(1000)
+            ->select('kategori_laporan', 'Jalan Rusak')
+            ->pause(1000)
+            ->type('deskripsi_laporan', 'TESTCASE: Ada jalan rusak di sini')
+            ->pause(1000)
+            ->attach('bukti_laporan', realpath(base_path('tests/Browser/dummy.jpg')))
+            ->waitUntilMissing('.swal2-container', 5)
+            ->pause(1200)
+            ->check('input#ceklis')
+            ->press('Kirim')
+            ->waitFor('.swal2-container', 5)
+            ->whenAvailable('.swal2-container', function ($modal) {
+                $modal->assertSee('Laporan berhasil dikirim!');
+                $modal->script("document.querySelector('.swal2-confirm').click();");
+            })
+            ->waitUntilMissing('.swal2-container', 5)
+            ->refresh()
+            ->pause(1500);
+
+        
+        Laporan::where('deskripsi', 'like', '%TESTCASE%')->delete();
+    });
+}
+
+}

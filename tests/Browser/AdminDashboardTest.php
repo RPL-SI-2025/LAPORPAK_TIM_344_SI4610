@@ -5,31 +5,33 @@ namespace Tests\Browser;
 use App\Models\User;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
-use Illuminate\Foundation\Testing\WithFaker;
+
 use Illuminate\Support\Facades\Hash;
 
 class AdminDashboardTest extends DuskTestCase
-{
-    use WithFaker;
+{ 
+    
 
     /** @test */
     public function admin_can_view_dashboard_and_see_statistics()
     {
-        // Bersihkan data user sebelum test
-        \App\Models\User::truncate();
 
-        $admin = User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin@example.com',
+        // Buat data dummy dengan ciri khusus
+        $dummyAdmin = User::factory()->create([
+            'name' => 'DUMMY_ADMIN_FOR_TEST',
+            'email' => 'dummy_admin_for_test@example.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
             'status' => 'aktif',
         ]);
 
-        $this->browse(function (Browser $browser) use ($admin) {
-            $browser->loginAs($admin)
+        $this->browse(function (Browser $browser) use ($dummyAdmin) {
+            $browser->loginAs($dummyAdmin)
                 ->visit('/admin/dashboard')
                 ->assertSee('Dashboard');
         });
+
+        // Hapus data dummy setelah test
+        User::where('email', 'dummy_admin_for_test@example.com')->delete();
     }
 }

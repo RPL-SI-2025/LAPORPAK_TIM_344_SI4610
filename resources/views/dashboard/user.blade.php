@@ -110,19 +110,39 @@
                 <div class="small mt-1" style="color:#232b44;">Total</div>
               </div>
               <div class="stat-card text-center bg-white bg-opacity-75 shadow-sm p-3 rounded" style="width:140px; height:170px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-                <i class="bi bi-calendar-check" style="font-size:2.1rem; color:#ffb300; margin-bottom:10px;"></i>
-                <div class="fw-bold" style="font-size:1.7rem; color:#232b44; line-height:1;">{{ $baru ?? '0' }}</div>
-                <div class="small mt-1" style="color:#232b44;">Baru</div>
+                <i class="bi bi-send" style="font-size:2.1rem; color:#3498db; margin-bottom:10px;"></i>
+                <div class="fw-bold" style="font-size:1.7rem; color:#232b44; line-height:1;">{{ $diajukan ?? '0' }}</div>
+                <div class="small mt-1" style="color:#232b44;">Diajukan</div>
               </div>
               <div class="stat-card text-center bg-white bg-opacity-75 shadow-sm p-3 rounded" style="width:140px; height:170px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-                <i class="bi bi-check2-square" style="font-size:2.1rem; color:#ffb300; margin-bottom:10px;"></i>
+                <i class="bi bi-search" style="font-size:2.1rem; color:#8e44ad; margin-bottom:10px;"></i>
+                <div class="fw-bold" style="font-size:1.7rem; color:#232b44; line-height:1;">{{ $diverifikasi ?? '0' }}</div>
+                <div class="small mt-1" style="color:#232b44;">Diverifikasi</div>
+              </div>
+              <div class="stat-card text-center bg-white bg-opacity-75 shadow-sm p-3 rounded" style="width:140px; height:170px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                <i class="bi bi-check-circle" style="font-size:2.1rem; color:#27ae60; margin-bottom:10px;"></i>
+                <div class="fw-bold" style="font-size:1.7rem; color:#232b44; line-height:1;">{{ $diterima ?? '0' }}</div>
+                <div class="small mt-1" style="color:#232b44;">Diterima</div>
+              </div>
+              <div class="stat-card text-center bg-white bg-opacity-75 shadow-sm p-3 rounded" style="width:140px; height:170px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                <i class="bi bi-x-circle" style="font-size:2.1rem; color:#e74c3c; margin-bottom:10px;"></i>
+                <div class="fw-bold" style="font-size:1.7rem; color:#232b44; line-height:1;">{{ $ditolak ?? '0' }}</div>
+                <div class="small mt-1" style="color:#232b44;">Ditolak</div>
+              </div>
+              <div class="stat-card text-center bg-white bg-opacity-75 shadow-sm p-3 rounded" style="width:140px; height:170px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                <i class="bi bi-tools" style="font-size:2.1rem; color:#f39c12; margin-bottom:10px;"></i>
+                <div class="fw-bold" style="font-size:1.7rem; color:#232b44; line-height:1;">{{ $ditindaklanjuti ?? '0' }}</div>
+                <div class="small mt-1" style="color:#232b44;">Ditindaklanjuti</div>
+              </div>
+              <div class="stat-card text-center bg-white bg-opacity-75 shadow-sm p-3 rounded" style="width:140px; height:170px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                <i class="bi bi-chat-dots" style="font-size:2.1rem; color:#16a085; margin-bottom:10px;"></i>
+                <div class="fw-bold" style="font-size:1.7rem; color:#232b44; line-height:1;">{{ $ditanggapi ?? '0' }}</div>
+                <div class="small mt-1" style="color:#232b44;">Ditanggapi</div>
+              </div>
+              <div class="stat-card text-center bg-white bg-opacity-75 shadow-sm p-3 rounded" style="width:140px; height:170px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                <i class="bi bi-check2-square" style="font-size:2.1rem; color:#2ecc71; margin-bottom:10px;"></i>
                 <div class="fw-bold" style="font-size:1.7rem; color:#232b44; line-height:1;">{{ $selesai ?? '0' }}</div>
                 <div class="small mt-1" style="color:#232b44;">Selesai</div>
-              </div>
-              <div class="stat-card text-center bg-white bg-opacity-75 shadow-sm p-3 rounded" style="width:140px; height:170px; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-                <i class="bi bi-gear-fill" style="font-size:2.1rem; color:#ffb300; margin-bottom:10px;"></i>
-                <div class="fw-bold" style="font-size:1.7rem; color:#232b44; line-height:1;">{{ $proses ?? '0' }}</div>
-                <div class="small mt-1" style="color:#232b44;">Proses</div>
               </div>
             </div>
           </div>

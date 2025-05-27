@@ -45,14 +45,27 @@ class DashboardController extends Controller
 
     public function user()
     {
-        // Ambil statistik laporan
+        // Ambil statistik laporan sesuai status
         $total = Laporan::count();
-        $baru = Laporan::where('status', 'baru')->count();
-        $proses = Laporan::where('status', 'proses_verifikasi')->count();
-        $verifikasi = Laporan::where('status', 'verifikasi')->count();
+        $diajukan = Laporan::where('status', 'diajukan')->count();
+        $diverifikasi = Laporan::where('status', 'diverifikasi')->count();
+        $diterima = Laporan::where('status', 'diterima')->count();
+        $ditolak = Laporan::where('status', 'ditolak')->count();
+        $ditindaklanjuti = Laporan::where('status', 'ditindaklanjuti')->count();
+        $ditanggapi = Laporan::where('status', 'ditanggapi')->count();
         $selesai = Laporan::where('status', 'selesai')->count();
         // Ambil 6 laporan terbaru
         $recentPosts = Laporan::latest()->take(6)->get();
-        return view('dashboard.user', compact('total', 'baru', 'proses', 'verifikasi', 'selesai', 'recentPosts'));
+        return view('dashboard.user', compact(
+            'total',
+            'diajukan',
+            'diverifikasi',
+            'diterima',
+            'ditolak',
+            'ditindaklanjuti',
+            'ditanggapi',
+            'selesai',
+            'recentPosts')
+        );
     }
 }

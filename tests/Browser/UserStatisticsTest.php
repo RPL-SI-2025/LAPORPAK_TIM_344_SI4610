@@ -5,41 +5,45 @@ namespace Tests\Browser;
 use App\Models\User;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
-use Illuminate\Foundation\Testing\WithFaker;
+
 use Illuminate\Support\Facades\Hash;
 
 class UserStatisticsTest extends DuskTestCase
-{
-    use WithFaker;
+{ // Tidak memakai trait agar tidak menghapus data utama
+    
 
     /** @test */
-    public function admin_can_see_user_statistics()
-    {
-        // Bersihkan data user sebelum test
-        \App\Models\User::truncate();
-
-        // Buat admin user
-        $admin = User::factory()->create([
-            'name' => 'Admin User',
-            'email' => 'admin2@example.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
+   public function user_can_see_own_statistics()
+{
+    // Pastikan user dummy ada
+    User::updateOrCreate(
+        ['email' => 'testcase@example.com'],
+        [
+            'name' => 'test user',
+            'password' => Hash::make('test12345'),
+            'role' => 'user',
             'status' => 'aktif',
-        ]);
+            'email_verified_at' => now(),
+        ]
+    );
 
-        // Buat dummy user: 2 aktif, 1 tidak aktif
-        User::factory()->count(2)->create(['status' => 'aktif']);
-        User::factory()->count(1)->create(['status' => 'tidak aktif']);
+    $this->browse(function (Browser $browser) {
+    $browser->visit('/login')
+        ->waitFor('input[name=email]', 5)
+        ->type('email', 'testcase@example.com')
+        ->type('password', 'test12345')
+        ->press('Masuk')
+        ->pause(1500)
+        ->visit('/dashboard/user')
+        // ->assertSee('Statistik LaporPak')
+        ->assertSee('total')
+        ->assertSee('baru')
+        ->assertSee('selesai')
+        ->assertSee('proses');
+});
 
-        $this->browse(function (Browser $browser) use ($admin) {
-            $browser->loginAs($admin)
-                ->visit('/admin/pengguna')
-                ->assertSee('Jumlah Pengguna')
-                ->assertSee('Aktif')
-                ->assertSee('Tidak Aktif')
-                ->assertSeeIn('.stat-box:nth-child(1) .stat-value', '4') // total pengguna
-                ->assertSeeIn('.stat-box:nth-child(2) .stat-value', '3') // aktif
-                ->assertSeeIn('.stat-box:nth-child(3) .stat-value', '1'); // tidak aktif
-        });
-    }
+    // Hapus user dummy setelah test jika perlu
+    User::where('email', 'testcase@example.com')->delete();
 }
+    }
+

@@ -10,11 +10,15 @@ class AdminSeeder extends Seeder
 {
     public function run()
     {
-        User::create([
-            'name' => 'Admin',
-            'email' => 'admin@laporpak.com',
-            'password' => Hash::make('admin123'), // Ganti password sesuai keinginan
-            'role' => 'admin',
-        ]);
+        User::updateOrCreate(
+            [
+                'email' => 'admin@laporpak.com',
+            ],
+            [
+                'name' => 'Admin',
+                'password' => Hash::make('admin123'), // Ganti password sesuai keinginan
+                'role' => 'admin',
+            ]
+        );
     }
 }

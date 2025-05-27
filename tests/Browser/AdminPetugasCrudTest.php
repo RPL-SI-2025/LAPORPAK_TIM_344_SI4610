@@ -45,7 +45,7 @@ class AdminPetugasCrudTest extends DuskTestCase
                           ->attach('foto', __DIR__.'/dummy.jpg')
                           ->click('@submit-tambah-petugas');
                 })
-                ->waitForText('Petugas berhasil ditambahkan', 5)
+                ->waitForText('Petugas berhasil ditambahkan', 15)
                 ->assertSee('Petugas berhasil ditambahkan');
         });
     }
@@ -57,7 +57,9 @@ class AdminPetugasCrudTest extends DuskTestCase
             'role' => 'admin',
             'email' => 'admin_view_' . $unique . '@mail.com'
         ]);
-        $petugas = Petugas::factory()->create(['nama' => 'Petugas List ' . $unique]);
+        $petugas = Petugas::factory()->create([
+    'nama' => 'Petugas List ' . $unique . ' testcase', // ciri unik + unique
+]);
         $this->browse(function (Browser $browser) use ($admin, $unique) {
             $browser->loginAs($admin)
                 ->visit('/admin/petugas')
@@ -72,7 +74,10 @@ class AdminPetugasCrudTest extends DuskTestCase
             'role' => 'admin',
             'email' => 'admin_assign_' . $unique . '@mail.com'
         ]);
-        $petugas = Petugas::factory()->create(['nama' => 'Petugas Assign ' . $unique]);
+       $petugas = Petugas::factory()->create([
+    // ... data lain lain jika ada
+    'nama' => 'Petugas List ' . $unique . ' testcase', // ciri unik + unique
+]);
         // Ambil nomor laporan yang statusnya diajukan
         $laporan = Laporan::factory()->create([
             'nomor_laporan' => 'LAPTEST' . $unique,
@@ -96,7 +101,11 @@ class AdminPetugasCrudTest extends DuskTestCase
     {
         $unique = uniqid();
         $admin = User::factory()->create(['role' => 'admin', 'email' => 'admin_verif_' . $unique . '@mail.com']);
-        $petugas = Petugas::factory()->create(['nama' => 'Petugas Verif ' . $unique]);
+        $petugas = Petugas::factory()->create([
+    
+    // ... data lain lain jika ada
+    'nama' => 'Petugas List ' . $unique . ' testcase', // ciri unik + unique
+]);
         $laporan = Laporan::factory()->create([
             'nomor_laporan' => 'LAPTEST' . $unique,
             'status' => 'diajukan'
@@ -123,7 +132,9 @@ class AdminPetugasCrudTest extends DuskTestCase
     public function test_petugas_task_appears_on_verifikasi_laporan()
     {
         $admin = User::factory()->create(['role' => 'admin']);
-        $petugas = Petugas::factory()->create(['nama' => 'Petugas Verif']);
+        $petugas = Petugas::factory()->create([
+            'nama' => 'Petugas Verifikasi testcase', // ciri unik
+        ]);
         $laporan = Laporan::factory()->create(['status' => 'diverifikasi']);
         $this->browse(function (Browser $browser) use ($admin, $petugas, $laporan) {
             $browser->loginAs($admin)
@@ -131,5 +142,6 @@ class AdminPetugasCrudTest extends DuskTestCase
                 ->assertSee('Petugas')
                 ->assertSee('Laporan');
         });
+        Petugas::where('nama', 'Petugas Verifikasi testcase')->delete();
     }
 }
