@@ -136,6 +136,7 @@
         <li><a href="{{ route('admin.laporan.index') }}" class="{{ request()->routeIs('admin.laporan.index') ? 'active' : '' }}"><i class="bi bi-chat-left-text"></i> <span>Laporan</span></a></li>
         <li><a href="{{ route('admin.feedback.index') }}" class="{{ request()->routeIs('admin.feedback.*') ? 'active' : '' }}"><i class="bi bi-chat-dots"></i> <span>Umpan Balik</span></a></li>
         <li><a href="{{ route('admin.user.index') }}" class="{{ request()->routeIs('admin.user.index') ? 'active' : '' }}"><i class="bi bi-people"></i> <span>Pengguna</span></a></li>
+        <li><a href="{{ route('admin.berita.index') }}" class="{{ request()->routeIs('admin.berita.*') ? 'active' : '' }}"><i class="bi bi-newspaper"></i> <span>Berita</span></a></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle d-flex align-items-center {{ request()->routeIs('admin.petugas.*') || request()->routeIs('admin.petugas.laporan-tugas.*') ? 'active' : '' }}" data-bs-toggle="dropdown" aria-expanded="false" onclick="event.preventDefault(); this.nextElementSibling.classList.toggle('show');">
     <i class="bi bi-person-badge"></i> <span>Petugas</span>
