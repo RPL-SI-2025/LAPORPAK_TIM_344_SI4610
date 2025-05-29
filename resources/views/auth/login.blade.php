@@ -103,8 +103,8 @@
 
 <div class="container">
     <div class="form-section">
-        <h1>Log In</h1>
-        <p>Don't have an account? <a href="{{ route('register') }}">Sign Up</a></p>
+        <h1>Masuk</h1>
+        <p>Tidak punya akun<a href="{{ route('register') }}">Daftar</a></p>
 
         @if ($errors->any())
             <div class="error">
@@ -129,7 +129,7 @@
                 <div id="passwordError" class="error"></div>
             </div>
 
-            <button type="submit">Log In</button>
+            <button type="submit">Masuk</button>
         </form>
     </div>
 

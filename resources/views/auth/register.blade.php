@@ -119,8 +119,8 @@
 
 <div class="container">
     <div class="form-section">
-        <h1>Sign Up</h1>
-        <p>Already have an account? <a href="{{ route('login') }}" style="color: #feb47b; text-decoration: none;">Log In</a></p>
+        <h1>Daftar</h1>
+        <p>Sudah punya akun ? <a href="{{ route('login') }}" style="color: #feb47b; text-decoration: none;">Masuk</a></p>
 
         @if ($errors->any())
             <div class="error">
@@ -136,7 +136,7 @@
             @csrf
 
             <div class="form-group">
-                <label>Name</label>
+                <label>Nama</label>
                 <input type="text" name="name" id="name" value="{{ old('name') }}">
                 <div id="nameError" class="error"></div>
             </div>
@@ -148,20 +148,20 @@
             </div>
 
             <div class="form-group">
-                <label>Password</label>
+                <label>Kata Sandi</label>
                 <input type="password" name="password" id="password">
                 <span class="eye-toggle" onclick="togglePassword('password')">&#128065;</span>
                 <div id="passwordError" class="error"></div>
             </div>
 
             <div class="form-group">
-                <label>Confirm Password</label>
+                <label>Konfirmasi Kata sandi</label>
                 <input type="password" name="password_confirmation" id="password_confirmation">
                 <span class="eye-toggle" onclick="togglePassword('password_confirmation')">&#128065;</span>
                 <div id="confirmPasswordError" class="error"></div>
             </div>
 
-            <button type="submit">Sign Up</button>
+            <button type="submit">Daftar</button>
         </form>
     </div>
 
