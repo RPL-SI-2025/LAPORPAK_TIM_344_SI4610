@@ -1,92 +1,223 @@
-<div class="auth-main-bg">
-  <a href="/" class="back-arrow-btn" title="Kembali ke Beranda">
-    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="#fbb03b" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
-  </a>
-  <div class="auth-glass-box wide">
-    <div class="auth-form-side">
-      <div class="auth-logo mb-4 text-center">
-        <span class="fw-bold" style="font-size:2.2rem;color:#fbb03b;letter-spacing:1px;">LaporPak!</span>
-      </div>
-      <center><h2 class="mb-2" style="font-weight:700;">Daftar</h2></center>
-      <span class="mb-3" style="color:#c9c9c9;font-size:1.04em;">Silakan isi data Anda untuk membuat akun</span>
-      <form method="POST" action="{{ route('register') }}">
-        @csrf
-        <div class="mb-2">
-          <input type="text" name="name" class="form-control auth-input w-100" placeholder="Nama Lengkap" required autofocus>
-        </div>
-        <div class="mb-2">
-          <input type="email" name="email" class="form-control auth-input w-100" placeholder="Email" required>
-        </div>
-        <div class="mb-2">
-          <input type="password" name="password" class="form-control auth-input w-100" placeholder="Kata Sandi" required>
-        </div>
-        <div class="mb-4">
-          <input type="password" name="password_confirmation" class="form-control auth-input w-100" placeholder="Konfirmasi Kata Sandi" required>
-        </div>
-        <div class="d-flex justify-content-center mb-3">
-          <center><button type="submit" class="btn auth-btn px-5">Daftar</button></center>
-        </div>
-        <div class="text-center mt-2">
-          Sudah punya akun? <a href="{{ route('login') }}" class="text-link">Masuk</a>
-        </div>
-      </form>
+<!-- resources/views/auth/register.blade.php -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(to bottom right, rgba(30,30,30,0.8), rgba(44,62,80,0.8));
+            z-index: 0;
+        }
+        .container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            display: flex;
+            width: 900px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            z-index: 1;
+        }
+        .form-section {
+            flex: 1;
+            padding: 40px;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+        .form-section h1 {
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+        .form-section p {
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 1px solid #555;
+            background: rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: white;
+            font-size: 14px;
+            outline: none;
+        }
+        .form-group .eye-toggle {
+            position: absolute;
+            top: 36px;
+            right: 15px;
+            cursor: pointer;
+            color: white;
+        }
+        .error {
+            color: #ff4d4d;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            opacity: 0.9;
+        }
+        .image-section {
+            flex: 1;
+            background: url('{{ asset('assets/img/daftar1.png') }}') no-repeat center center/cover;
+            position: relative;
+        }
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+                width: 90%;
+            }
+            .image-section {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+
+<body style="background: url('{{ asset('assets/img/bgl.png') }}') no-repeat center center; background-size: auto;">
+
+
+
+<div class="container">
+    <div class="form-section">
+        <h1>Sign Up</h1>
+        <p>Already have an account? <a href="{{ route('login') }}" style="color: #feb47b; text-decoration: none;">Log In</a></p>
+
+        @if ($errors->any())
+            <div class="error">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <form id="registerForm" method="POST" action="{{ route('register') }}">
+            @csrf
+
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" name="name" id="name" value="{{ old('name') }}">
+                <div id="nameError" class="error"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" name="email" id="email" value="{{ old('email') }}">
+                <div id="emailError" class="error"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" name="password" id="password">
+                <span class="eye-toggle" onclick="togglePassword('password')">&#128065;</span>
+                <div id="passwordError" class="error"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Confirm Password</label>
+                <input type="password" name="password_confirmation" id="password_confirmation">
+                <span class="eye-toggle" onclick="togglePassword('password_confirmation')">&#128065;</span>
+                <div id="confirmPasswordError" class="error"></div>
+            </div>
+
+            <button type="submit">Sign Up</button>
+        </form>
     </div>
-  </div>
+
+    <div class="image-section">
+    </div>
 </div>
-<style>
-  html, body {
-    height: 100%; min-height: 100vh; width: 100vw; margin: 0; padding: 0; overflow: hidden; background: #151f2e;
-  }
-  .auth-main-bg {
-    min-height: 100vh; width: 100vw; background: radial-gradient(ellipse at top left, #fbb03b22 0%, transparent 60%), radial-gradient(ellipse at bottom right, #fbb03b33 0%, transparent 70%), #151f2e; display: flex; align-items: center; justify-content: center;
-  }
-  .auth-glass-box {
-    display: flex; flex-direction: row; background: rgba(30,34,44,0.92); border-radius: 24px; box-shadow: 0 6px 32px 0 #0002; overflow: hidden; max-width: 640px; width: 100%; min-height: 480px; transition: max-width 0.2s;
-  }
-  .auth-glass-box.wide {
-    max-width: 640px;
-  }
-  .auth-form-side {
-    flex: 1 1 0; padding: 48px 48px; display: flex; flex-direction: column; justify-content: center; background: rgba(255,255,255,0.09); backdrop-filter: blur(2px);
-  }
-  .auth-logo {
-    font-family: 'Poppins', Arial, sans-serif; font-weight: bold;
-  }
-  .auth-btn {
-    background: linear-gradient(90deg,#fbb03b 0%, #fbb03b 60%, #ffb84d 100%); color: #fff; font-weight: 600; font-size: 1.1rem; border: none; border-radius: 8px; box-shadow: 0 2px 8px #fbb03b22; transition: background 0.2s; min-width: 120px; text-align: center;
-  }
-  .auth-btn:hover { background: linear-gradient(90deg,#fbb03b 0%, #ffb84d 100%); }
-  .auth-input {
-    background: #252e3c; color: #fff; border: 1.5px solid #fbb03b55; border-radius: 8px; padding: 12px 16px; font-size: 1.13em; margin-bottom: 0.2em; width: 100%;
-  }
-  .auth-input:focus { border-color: #fbb03b; background: #232b39; color: #fff; }
-  .text-link { color: #fbb03b; text-decoration: underline; font-weight: 500; }
-  .text-link:hover { color: #fff; }
-  .text-center.mt-2 { margin-top: 18px; }
-  .back-arrow-btn {
-    position: absolute;
-    top: 32px;
-    left: 32px;
-    z-index: 10;
-    background: rgba(30,34,44,0.88);
-    border-radius: 50%;
-    padding: 7px 8px 7px 7px;
-    box-shadow: 0 2px 12px #0002;
-    transition: background 0.18s;
-    display: inline-block;
-    line-height: 1;
-  }
-  .back-arrow-btn:hover {
-    background: #fbb03b22;
-    box-shadow: 0 4px 18px #fbb03b33;
-  }
-  @media (max-width: 800px) {
-    .auth-glass-box, .auth-glass-box.wide { max-width: 98vw; }
-    .auth-form-side { padding: 32px 8vw; }
-  }
-  @media (max-width: 600px) {
-    .auth-form-side { padding: 24px 5vw; }
-    .auth-glass-box, .auth-glass-box.wide { border-radius: 0; }
-    .back-arrow-btn { top: 14px; left: 12px; padding: 4px 5px 4px 4px; }
-  }
-</style>
+
+<script>
+    function togglePassword(fieldId) {
+        const field = document.getElementById(fieldId);
+        field.type = field.type === "password" ? "text" : "password";
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', function(event) {
+        let valid = true;
+
+        // Clear previous errors
+        document.getElementById('nameError').innerText = '';
+        document.getElementById('emailError').innerText = '';
+        document.getElementById('passwordError').innerText = '';
+        document.getElementById('confirmPasswordError').innerText = '';
+
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('password_confirmation').value;
+
+        // Check if fields are empty
+        if (name === '') {
+            document.getElementById('nameError').innerText = 'Name is required.';
+            valid = false;
+        }
+        if (email === '') {
+            document.getElementById('emailError').innerText = 'Email is required.';
+            valid = false;
+        }
+        if (password === '') {
+            document.getElementById('passwordError').innerText = 'Password is required.';
+            valid = false;
+        }
+        if (confirmPassword === '') {
+            document.getElementById('confirmPasswordError').innerText = 'Confirm Password is required.';
+            valid = false;
+        }
+
+        // Check if password and confirm password match
+        if (password !== '' && confirmPassword !== '' && password !== confirmPassword) {
+            document.getElementById('confirmPasswordError').innerText = 'Passwords do not match.';
+            valid = false;
+        }
+
+        if (!valid) {
+            event.preventDefault(); // Stop form submission
+        }
+    });
+</script>
+
+</body>
+</html>

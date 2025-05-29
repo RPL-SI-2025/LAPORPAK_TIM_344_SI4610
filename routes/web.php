@@ -25,6 +25,10 @@ Route::get('/user/laporan/ringkasan', [UserLaporanController::class, 'ringkasan'
 Route::post('/lapor', [LaporanPublikController::class, 'submit'])->name('submit.laporan');
 Route::get('/laporan/masuk', [LaporanPublikController::class, 'index'])->name('laporan.masuk');
 
+// News (Public)
+Route::get('/news', [\App\Http\Controllers\NewsController::class, 'index'])->name('news.index');
+Route::get('/news/{id}', [\App\Http\Controllers\NewsController::class, 'show'])->name('news.show');
+
 // Statistik (Uncomment if needed)
 // Route::get('/statistik', [StatistikController::class, 'index'])->name('statistik');
 
@@ -73,6 +77,14 @@ Route::prefix('petugas')->name('petugas.')->group(function () {
         // Manajemen Pengguna
         Route::get('/pengguna', [UserController::class, 'index'])->name('user.index');
         Route::post('/pengguna/{id}/update-status', [UserController::class, 'updateStatus'])->name('user.updateStatus');
+
+        // Berita (Admin)
+        Route::get('/berita', [\App\Http\Controllers\Admin\BeritaController::class, 'index'])->name('berita.index');
+        Route::get('/berita/create', [\App\Http\Controllers\Admin\BeritaController::class, 'create'])->name('berita.create');
+        Route::post('/berita', [\App\Http\Controllers\Admin\BeritaController::class, 'store'])->name('berita.store');
+        Route::get('/berita/{berita}/edit', [\App\Http\Controllers\Admin\BeritaController::class, 'edit'])->name('berita.edit');
+        Route::put('/berita/{berita}', [\App\Http\Controllers\Admin\BeritaController::class, 'update'])->name('berita.update');
+        Route::delete('/berita/{berita}', [\App\Http\Controllers\Admin\BeritaController::class, 'destroy'])->name('berita.destroy');
 
         // CRUD Petugas
         Route::resource('petugas', PetugasController::class)
