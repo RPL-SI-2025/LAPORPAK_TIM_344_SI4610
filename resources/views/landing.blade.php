@@ -52,7 +52,7 @@
         <ul>
           <li><a href="{{ route('news.index') }}" class="text-decoration-none">Beranda<br></a></li>
           <li><a href="#statistik">Statistik</a></li>
-          <li><a href="/about.html">FAQ</a></li>
+          <li><a href="{{ route('faq') }}">FAQ</a></li>
           {{-- <li><a href="#contact">Kontak</a></li>
           <li><a href="{{ route('track.show') }}" class="btn-get-started">Lacak Laporan</a></li> --}}
           @if (Route::has('login'))

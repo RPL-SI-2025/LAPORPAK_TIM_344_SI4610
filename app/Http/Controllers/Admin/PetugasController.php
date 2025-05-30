@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Log;
 
 class PetugasController extends Controller
 {
+    // Halaman verifikasi petugas
+    public function verifikasi()
+    {
+        $petugas = Petugas::all();
+        return view('admin.petugas_verifikasi', compact('petugas'));
+    }
     public function index()
     {
         $petugas = Petugas::all();

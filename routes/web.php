@@ -29,6 +29,10 @@ Route::get('/laporan/masuk', [LaporanPublikController::class, 'index'])->name('l
 Route::get('/news', [\App\Http\Controllers\NewsController::class, 'index'])->name('news.index');
 Route::get('/news/{id}', [\App\Http\Controllers\NewsController::class, 'show'])->name('news.show');
 
+// FAQ (Public)
+use App\Http\Controllers\Admin\FaqController;
+Route::get('/faq', [FaqController::class, 'publicIndex'])->name('faq');
+
 // Statistik (Uncomment if needed)
 // Route::get('/statistik', [StatistikController::class, 'index'])->name('statistik');
 
@@ -87,9 +91,13 @@ Route::prefix('petugas')->name('petugas.')->group(function () {
         Route::delete('/berita/{berita}', [\App\Http\Controllers\Admin\BeritaController::class, 'destroy'])->name('berita.destroy');
 
         // CRUD Petugas
+        Route::get('petugas/verifikasi', [PetugasController::class, 'verifikasi'])->name('petugas.verifikasi');
         Route::resource('petugas', PetugasController::class)
             ->except(['show'])
             ->parameters(['petugas' => 'petugas']);
+
+        // CRUD FAQ (Admin)
+        Route::resource('faq', App\Http\Controllers\Admin\FaqController::class)->except(['show']);
 
         // CRUD Feedback (Admin)
         Route::resource('feedback', App\Http\Controllers\Admin\FeedbackController::class)->except(['show']);
