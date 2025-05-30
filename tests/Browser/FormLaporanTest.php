@@ -12,6 +12,12 @@ class FormLaporanTest extends DuskTestCase
      */
     public function test_semua_field_kosong()
     {
+        \App\Models\User::where('email', 'test@example.com')->delete();
+        \App\Models\User::factory()->create([
+            'email' => 'test@example.com',
+            'password' => bcrypt('test12345'),
+            'role' => 'user'
+        ]);
         $this->browse(function (Browser $browser) {
             $browser->visit('/login')
                 ->waitFor('input[name=email]', 5)
@@ -36,6 +42,12 @@ class FormLaporanTest extends DuskTestCase
      */
     public function test_bukti_laporan_kosong()
     {
+        \App\Models\User::where('email', 'test@example.com')->delete();
+        \App\Models\User::factory()->create([
+            'email' => 'test@example.com',
+            'password' => bcrypt('test12345'),
+            'role' => 'user'
+        ]);
         $this->browse(function (Browser $browser) {
             $browser->select('jenis_laporan', 'Publik')
                 ->pause(1000)
@@ -61,6 +73,12 @@ class FormLaporanTest extends DuskTestCase
      */
     public function test_kolom_lain_kosong()
     {
+        \App\Models\User::where('email', 'test@example.com')->delete();
+        \App\Models\User::factory()->create([
+            'email' => 'test@example.com',
+            'password' => bcrypt('test12345'),
+            'role' => 'user'
+        ]);
         $this->browse(function (Browser $browser) {
             $browser->select('jenis_laporan', 'Publik')
                 ->pause(1000)
@@ -85,6 +103,12 @@ class FormLaporanTest extends DuskTestCase
      */
     public function test_ceklis_tidak_diceklis()
     {
+        \App\Models\User::where('email', 'test@example.com')->delete();
+        \App\Models\User::factory()->create([
+            'email' => 'test@example.com',
+            'password' => bcrypt('test12345'),
+            'role' => 'user'
+        ]);
         $this->browse(function (Browser $browser) {
             $browser->select('jenis_laporan', 'Publik')
                 ->pause(1000)
@@ -109,6 +133,12 @@ class FormLaporanTest extends DuskTestCase
      */
     public function test_laporan_berhasil_dibuat()
 {
+    \App\Models\User::where('email', 'test@example.com')->delete();
+        \App\Models\User::factory()->create([
+        'email' => 'test@example.com',
+        'password' => bcrypt('test12345'),
+        'role' => 'user'
+    ]);
     $this->browse(function (Browser $browser) {
         $browser->select('jenis_laporan', 'Publik')
             ->pause(1000)
