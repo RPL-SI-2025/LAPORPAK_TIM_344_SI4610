@@ -65,6 +65,7 @@ use Illuminate\Support\Facades\Storage;
 
     <!-- Featured News Section -->
     <div class="container mt-4">
+    <button type="button" onclick="window.history.back()" class="btn btn-secondary mb-3"><i class="fa fa-arrow-left me-1"></i> Kembali</button>
         <div class="row">
             <div class="col-12">
                 <h2 class="mb-4">Berita Utama</h2>

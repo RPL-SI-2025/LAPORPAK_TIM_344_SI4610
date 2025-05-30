@@ -50,7 +50,7 @@
 
       <nav id="navmenu" class="navmenu">
         <ul>
-          <li><a href="/" class="active">Beranda<br></a></li>
+          <li><a href="{{ route('news.index') }}" class="text-decoration-none">Beranda<br></a></li>
           <li><a href="#statistik">Statistik</a></li>
           <li><a href="/about.html">FAQ</a></li>
           <li><a href="#contact">Kontak</a></li>
@@ -157,8 +157,8 @@
     <!-- Statistik -->
     <section class="min-vh-100 d-flex align-items-center position-relative overflow-hidden" style="z-index: 0;">
       <!-- Gambar Background  -->
-      <img src="{{ asset('assets/img/dashboard-2.png') }}" alt="" 
-          class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover" 
+      <img src="{{ asset('assets/img/dashboard-2.png') }}" alt=""
+          class="position-absolute top-0 start-0 w-100 h-100 object-fit-cover"
           style="z-index: 0; opacity: 0.95;" data-aos="fade-in">
 
       <div class="container position-relative" style="z-index: 2;">
@@ -220,33 +220,37 @@
       <div class="container">
         <div class="d-flex justify-content-between align-items-center mb-3">
           <h3 class="fw-bold" style="color:#232b44;">Recent Posts</h3>
-          <a href="#" class="btn btn-outline-secondary btn-sm fw-bold">VIEW ALL <i class="bi bi-arrow-up-right"></i></a>
+          <a href="{{ route('news.index') }}" class="btn btn-outline-secondary btn-sm fw-bold">VIEW ALL <i class="bi bi-arrow-up-right"></i></a>
         </div>
         <div class="row">
           <!-- Main Posts -->
           <div class="col-lg-8">
             <div class="row g-3">
-              @foreach(($laporanTerbaru ?? []) as $laporan)
+              @foreach(($recentPosts ?? []) as $laporan)
                 <div class="col-md-4">
-                  <div class="card bg-dark text-white h-100">
-                    <img src="{{ asset('assets/img/news1.jpg') }}" class="card-img" alt="">
-                    <div class="card-img-overlay d-flex flex-column justify-content-end p-2">
-                      <h6 class="card-title fw-bold mb-1" style="font-size:1rem;">{{ $laporan->judul ?? '-' }}</h6>
-                      <p class="card-text mb-0" style="font-size:0.85rem;"><i class="bi bi-calendar"></i> {{ $laporan->created_at ? $laporan->created_at->format('d M Y') : '-' }}</p>
+                  <a href="{{ route('news.index') }}" class="text-decoration-none">
+                    <div class="card bg-dark text-white h-100">
+                      <img src="{{ asset('assets/img/news1.jpg') }}" class="card-img" alt="">
+                      <div class="card-img-overlay d-flex flex-column justify-content-end p-2">
+                        <h6 class="card-title fw-bold mb-1" style="font-size:1rem;">Lorem Ipsum Is Simply Dummy Text</h6>
+                        <p class="card-text mb-0" style="font-size:0.85rem;"><i class="bi bi-calendar"></i> 27 August, 2024</p>
+                      </div>
                     </div>
-                  </div>
+                  </a>
                 </div>
               @endforeach
-              @if(empty($laporanTerbaru) || count($laporanTerbaru) < 3)
-                @for($i = (count($laporanTerbaru ?? [])); $i < 3; $i++)
+              @if(empty($recentPosts) || count($recentPosts) < 3)
+                @for($i = (count($recentPosts ?? [])); $i < 3; $i++)
                 <div class="col-md-4">
-                  <div class="card bg-dark text-white h-100">
-                    <img src="{{ asset('assets/img/news'.($i+1).'.jpg') }}" class="card-img" alt="">
-                    <div class="card-img-overlay d-flex flex-column justify-content-end p-2">
-                      <h6 class="card-title fw-bold mb-1" style="font-size:1rem;">Lorem Ipsum Is Simply Dummy Text</h6>
-                      <p class="card-text mb-0" style="font-size:0.85rem;"><i class="bi bi-calendar"></i> 27 August, 2024</p>
+                  <a href="{{ route('news.index') }}" class="text-decoration-none">
+                    <div class="card bg-dark text-white h-100">
+                      <img src="{{ asset('assets/img/news'.($i+1).'.jpg') }}" class="card-img" alt="">
+                      <div class="card-img-overlay d-flex flex-column justify-content-end p-2">
+                        <h6 class="card-title fw-bold mb-1" style="font-size:1rem;">Lorem Ipsum Is Simply Dummy Text</h6>
+                        <p class="card-text mb-0" style="font-size:0.85rem;"><i class="bi bi-calendar"></i> 27 August, 2024</p>
+                      </div>
                     </div>
-                  </div>
+                  </a>
                 </div>
                 @endfor
               @endif
@@ -254,13 +258,15 @@
             <div class="row g-3 mt-2">
               @for($i = 0; $i < 2; $i++)
               <div class="col-md-6">
-                <div class="card bg-dark text-white h-100">
-                  <img src="{{ asset('assets/img/news'.($i+4).'.jpg') }}" class="card-img" alt="">
-                  <div class="card-img-overlay d-flex flex-column justify-content-end p-2">
-                    <h6 class="card-title fw-bold mb-1" style="font-size:1rem;">Lorem Ipsum Is Simply Dummy Text Of The Printing</h6>
-                    <p class="card-text mb-0" style="font-size:0.85rem;"><i class="bi bi-calendar"></i> 27 August, 2024 <i class="bi bi-clock ms-2"></i> 20 mins</p>
+                <a href="/berita/shownews.html" class="text-decoration-none">
+                  <div class="card bg-dark text-white h-100">
+                    <img src="{{ asset('assets/img/news'.($i+4).'.jpg') }}" class="card-img" alt="">
+                    <div class="card-img-overlay d-flex flex-column justify-content-end p-2">
+                      <h6 class="card-title fw-bold mb-1" style="font-size:1rem;">Lorem Ipsum Is Simply Dummy Text Of The Printing</h6>
+                      <p class="card-text mb-0" style="font-size:0.85rem;"><i class="bi bi-calendar"></i> 27 August, 2024 <i class="bi bi-clock ms-2"></i> 20 mins</p>
+                    </div>
                   </div>
-                </div>
+                </a>
               </div>
               @endfor
             </div>

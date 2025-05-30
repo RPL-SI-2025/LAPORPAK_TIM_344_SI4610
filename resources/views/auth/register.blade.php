@@ -120,7 +120,7 @@
 <div class="container">
     <div class="form-section">
         <h1>Daftar</h1>
-        <p>Sudah punya akun ? <a href="{{ route('login') }}" style="color: #feb47b; text-decoration: none;">Masuk</a></p>
+        <p>Sudah punya akun ? <a href="{{ route('login') }}" style="color: #feb47b; text-decoration: none;"> Masuk</a></p>
 
         @if ($errors->any())
             <div class="error">

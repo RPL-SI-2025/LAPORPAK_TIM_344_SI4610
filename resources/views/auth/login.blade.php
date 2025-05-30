@@ -104,7 +104,7 @@
 <div class="container">
     <div class="form-section">
         <h1>Masuk</h1>
-        <p>Tidak punya akun<a href="{{ route('register') }}">Daftar</a></p>
+        <p>Tidak punya akun<a href="{{ route('register') }}"> Daftar</a></p>
 
         @if ($errors->any())
             <div class="error">
