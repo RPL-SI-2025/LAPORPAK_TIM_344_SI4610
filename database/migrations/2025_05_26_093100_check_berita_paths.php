@@ -10,9 +10,11 @@ return new class extends Migration
     public function up(): void
     {
         // Check current paths
-        $beritas = DB::table('berita')->whereNotNull('gambar')->get();
-        foreach ($beritas as $berita) {
-            echo "ID: {$berita->id}, Path: {$berita->gambar}\n";
+        if (Schema::hasTable('berita')) {
+            $beritas = DB::table('berita')->whereNotNull('gambar')->get();
+            foreach ($beritas as $berita) {
+                echo "ID: {$berita->id}, Path: {$berita->gambar}\n";
+            }
         }
     }
 

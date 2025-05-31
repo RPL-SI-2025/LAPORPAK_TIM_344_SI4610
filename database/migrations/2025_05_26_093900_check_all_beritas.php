@@ -9,6 +9,7 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (!Schema::hasTable('berita')) return;
         // Check all beritas
         $beritas = DB::table('berita')->orderBy('id', 'asc')->get();
         foreach ($beritas as $berita) {

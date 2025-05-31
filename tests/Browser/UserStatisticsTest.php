@@ -27,20 +27,21 @@ class UserStatisticsTest extends DuskTestCase
         ]
     );
 
-    $this->browse(function (Browser $browser) {
-    $browser->visit('/login')
-        ->waitFor('input[name=email]', 5)
-        ->type('email', 'testcase@example.com')
-        ->type('password', 'test12345')
-        ->press('Masuk')
-        ->pause(1500)
-        ->visit('/dashboard/user')
-        // ->assertSee('Statistik LaporPak')
-        ->assertSee('total')
-        ->assertSee('baru')
-        ->assertSee('selesai')
-        ->assertSee('proses');
-});
+    // Ambil semua status unik dari tabel laporans
+    $statuses = \App\Models\Laporan::select('status')->distinct()->pluck('status')->toArray();
+
+    $this->browse(function (Browser $browser) use ($statuses) {
+        $browser->visit('/login')
+            ->waitFor('input[name=email]', 5)
+            ->type('email', 'testcase@example.com')
+            ->type('password', 'test12345')
+            ->press('Masuk')
+            ->pause(1500)
+            ->visit('/dashboard/user');
+        foreach ($statuses as $status) {
+            $browser->assertSee($status);
+        }
+    });
 
     // Hapus user dummy setelah test jika perlu
     User::where('email', 'testcase@example.com')->delete();

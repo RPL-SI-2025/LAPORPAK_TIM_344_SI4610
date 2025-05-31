@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('berita', function (Blueprint $table) {
-            $table->string('status')->default('draft')->change();
+        Schema::table('feedback', function (Blueprint $table) {
+            $table->string('testcase_tag')->nullable()->after('is_processed');
         });
     }
 
@@ -21,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('berita', function (Blueprint $table) {
-            $table->string('status')->change();
+        Schema::table('feedback', function (Blueprint $table) {
+            $table->dropColumn('testcase_tag');
         });
     }
 };

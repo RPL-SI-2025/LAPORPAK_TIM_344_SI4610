@@ -8,7 +8,7 @@
                 </a>
             </div>
             <div class="d-flex align-items-center gap-4">
-                <a href="{{ route('dashboard') }}" class="text-decoration-none text-dark fw-semibold {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+                <a href="{{ route('notifikasi.index') }}" class="text-decoration-none text-dark fw-semibold {{ request()->routeIs('notifikasi.index') ? 'active' : '' }}">
                     <i class="bi bi-bell"></i> Notifikasi
                 </a>
                 </a>

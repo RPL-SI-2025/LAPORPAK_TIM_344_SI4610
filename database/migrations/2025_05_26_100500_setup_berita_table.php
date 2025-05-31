@@ -8,7 +8,8 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('berita', function (Blueprint $table) {
+        if (!Schema::hasTable('berita')) {
+            Schema::create('berita', function (Blueprint $table) {
             $table->id();
             $table->string('judul');
             $table->string('kategori', 50);
@@ -18,6 +19,7 @@ return new class extends Migration
             $table->string('gambar')->nullable();
             $table->timestamps();
         });
+        }
     }
 
     public function down(): void

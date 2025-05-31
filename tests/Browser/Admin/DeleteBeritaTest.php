@@ -21,11 +21,25 @@ class DeleteBeritaTest extends DuskTestCase
             throw new \Exception('Admin user not found in database');
         }
 
-        // Find or create the test berita that was created in CreateBeritaTest or UpdateBeritaTest
-        $this->testBerita = Berita::where('judul', 'Test Berita')->first();
-        
+        // Buat test_tag unik untuk setiap test
+        $this->testcaseTag = 'testcase_' . uniqid();
+        // Find or create the test berita yang memiliki test_tag
+        $this->testBerita = Berita::firstOrCreate(
+            [
+                'judul' => 'Test Berita',
+                'test_tag' => $this->testcaseTag
+            ],
+            [
+                'kategori' => 'Test Kategori',
+                'isi' => 'Isi berita test',
+                'tanggal_terbit' => '2025-05-18',
+                'status' => 'published',
+                'gambar' => 'berita/news10.jpg',
+            ]
+        );
+
         if (!$this->testBerita) {
-            throw new \Exception('Test berita not found. Please run CreateBeritaTest first.');
+            throw new \Exception('Test berita not found or failed to create.');
         }
     }
 
@@ -115,7 +129,9 @@ class DeleteBeritaTest extends DuskTestCase
 
         // Verify the berita was actually deleted from the database
         $this->assertDatabaseMissing('berita', [
-            'id' => $berita->id
+            'test_tag' => $this->testcaseTag
         ]);
+        // Bersihkan data dummy jika masih ada
+        Berita::where('test_tag', $this->testcaseTag)->delete();
     }
 }

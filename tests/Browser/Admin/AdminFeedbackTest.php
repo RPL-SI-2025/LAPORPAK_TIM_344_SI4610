@@ -5,10 +5,23 @@ namespace Tests\Browser;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\DB;
 
 class AdminFeedbackTest extends DuskTestCase
 {
+    protected $testcaseTag;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->testcaseTag = 'testcase_' . uniqid();
+    }
+
+    protected function tearDown(): void
+    {
+        DB::table('feedback')->where('testcase_tag', $this->testcaseTag)->delete();
+        parent::tearDown();
+    }
     public function testAdminCanSendFeedbackOnCompletedReport()
     {
         $this->browse(function (Browser $browser) {

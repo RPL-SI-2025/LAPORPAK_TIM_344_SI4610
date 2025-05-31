@@ -32,7 +32,8 @@
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>
-      @auth
+      <li><a href="{{ route('notifikasi.index') }}" class="{{ request()->routeIs('notifikasi.index') ? 'active' : '' }}"><i class="bi bi-bell"></i> Notifikasi</a></li>
+@auth
       @if(auth()->user()->role === 'user')
       <!-- User Profile Dropdown -->
                 <div class="dropdown">

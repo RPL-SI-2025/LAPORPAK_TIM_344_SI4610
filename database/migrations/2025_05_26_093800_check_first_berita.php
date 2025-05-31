@@ -9,6 +9,7 @@ return new class extends Migration
 {
     public function up(): void
     {
+        if (!Schema::hasTable('berita')) return;
         // Check the first berita
         $berita = DB::table('berita')->orderBy('id', 'asc')->first();
         if ($berita) {

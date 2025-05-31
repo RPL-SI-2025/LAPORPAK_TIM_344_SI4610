@@ -5,11 +5,23 @@ namespace Tests\Browser;
 use App\Models\User;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\DB;
 
 class UserFeedbackTest extends DuskTestCase
 {
-    use DatabaseMigrations;
+    protected $testcaseTag;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->testcaseTag = 'testcase_' . uniqid();
+    }
+
+    protected function tearDown(): void
+    {
+        DB::table('feedback')->where('testcase_tag', $this->testcaseTag)->delete();
+        parent::tearDown();
+    }
 
     /** @test */
     public function user_can_submit_feedback_after_report_completed()

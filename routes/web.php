@@ -105,7 +105,8 @@ Route::prefix('petugas')->name('petugas.')->group(function () {
         // Route pemberian tugas laporan ke petugas
         Route::post('petugas/{petugas}/kirim-laporan', [\App\Http\Controllers\Admin\PetugasLaporanController::class, 'store'])->name('petugas-laporan.store');
     });
-});
+});use App\Http\Controllers\NotificationController;
+Route::get('/notifikasi', [NotificationController::class, 'index'])->name('notifikasi.index');
 
 // -----------------------------
 // 🛡️ Auth Routes (Laravel Breeze/Fortify/etc.)

@@ -20,7 +20,7 @@ class NotificationController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        return response()->json($notifications);
+        return view('notifikasi.index', compact('notifications'));
     }
 
     // Test method to check JSON storage
