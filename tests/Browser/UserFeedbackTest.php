@@ -28,13 +28,16 @@ class UserFeedbackTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
          
-            $user = User::factory()->create([
-                'email' => 'user@gmail.com',
-                'password' => bcrypt('password') 
-            ]);
-
+            // Ambil email dummy dari file (baris kedua)
+            $dummyInfo = file(base_path('tests/dummy_laporan_id.txt'), FILE_IGNORE_NEW_LINES);
+            $dummyEmail = $dummyInfo[1];
+            $dummyPassword = 'test12345';
             $browser
-                ->loginAs($user)
+                ->visit('/login')
+                ->type('email', $dummyEmail)
+                ->type('password', $dummyPassword)
+                ->press('Login')
+                ->pause(1000)
                 ->visit('/dashboard/user')
                 ->assertPathIs('/dashboard/user')
                 ->pause(3000)

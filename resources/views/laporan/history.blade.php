@@ -1,4 +1,4 @@
-@extends('layouts.app', ['noScripts' => true])
+@extends('layouts.app')
 
 @section('content')
 <style>
@@ -124,6 +124,17 @@
             <button type="button" class="btn btn-delete-custom btn-sm btn-hapus-laporan" title="Hapus">Hapus</button>
         </form>
     </div>
+    @if($laporan->status === 'selesai' && $laporan->feedbackAdmin && !$laporan->feedbackUser)
+    <!-- Tombol Beri Feedback (halaman popup biasa)-->
+    <a href="{{ route('laporan.feedbackUserForm', $laporan->id) }}" class="btn btn-primary btn-sm mt-2" target="_blank">Beri Feedback</a>
+@elseif($laporan->feedbackUser)
+        <!-- Sudah ada feedback user -->
+        <div class="mt-2">
+          <span class="badge bg-success">Feedback Terkirim</span><br>
+          <strong>Rating:</strong> {{ $laporan->feedbackUser->rating }}<br>
+          <strong>Pesan:</strong> {{ $laporan->feedbackUser->pesan }}
+        </div>
+    @endif
 </td>
                     </tr>
                     @endforeach

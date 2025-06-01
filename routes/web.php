@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\PetugasController;
 use App\Http\Controllers\TrackReportController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\KondisiJalanController; // Kondisi Jalan
 use App\Http\Controllers\StatistikController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserLaporanController;
@@ -24,6 +25,9 @@ Route::get('/user/laporan/ringkasan', [UserLaporanController::class, 'ringkasan'
 // Public laporan submission
 Route::post('/lapor', [LaporanPublikController::class, 'submit'])->name('submit.laporan');
 Route::get('/laporan/masuk', [LaporanPublikController::class, 'index'])->name('laporan.masuk');
+
+// Kondisi Jalan
+Route::get('/kondisi-jalan', [KondisiJalanController::class, 'index'])->name('petakondisi.index');
 
 // News (Public)
 Route::get('/news', [\App\Http\Controllers\NewsController::class, 'index'])->name('news.index');
@@ -45,6 +49,8 @@ Route::post('/track/search', [TrackReportController::class, 'search'])->name('tr
 // -----------------------------
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    // Notifikasi user
+    Route::get('/notifikasi', [\App\Http\Controllers\NotificationController::class, 'index'])->name('notifikasi.index');
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/user', [DashboardController::class, 'user'])->name('user.dashboard');
@@ -53,6 +59,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/profile', fn () => view('profile.profil'))->name('profile.index');
     Route::get('/profile/show', fn () => redirect()->route('profile.index'))->name('profile.show');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Feedback User pada laporan
+    Route::get('/laporan/{id}/feedback-user-form', [\App\Http\Controllers\LaporanController::class, 'feedbackUserForm'])->name('laporan.feedbackUserForm');
+    Route::post('/laporan/{id}/feedback-user', [\App\Http\Controllers\LaporanController::class, 'feedbackUser'])->name('laporan.feedbackUser');
 
     // History Laporan User (lihat, edit, hapus, detail)
     Route::resource('laporan', \App\Http\Controllers\LaporanController::class)->except(['create', 'store']);

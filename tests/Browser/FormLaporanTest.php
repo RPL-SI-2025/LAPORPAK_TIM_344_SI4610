@@ -51,7 +51,7 @@ class FormLaporanTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->select('jenis_laporan', 'Publik')
                 ->pause(1000)
-                ->type('lokasi_laporan', 'Jl. Contoh')
+                ->type('lokasi', '-6.9298242,107.6349601')
                 ->pause(1000)
                 ->select('kategori_laporan', 'Jalan Rusak')
                 ->pause(1000)
@@ -112,7 +112,7 @@ class FormLaporanTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->select('jenis_laporan', 'Publik')
                 ->pause(1000)
-                ->type('lokasi_laporan', 'Jl. Contoh')
+                ->type('lokasi', '-6.9298242,107.6349601')
                 ->pause(1000)
                 ->select('kategori_laporan', 'Jalan Rusak')
                 ->pause(1000)
@@ -142,7 +142,7 @@ class FormLaporanTest extends DuskTestCase
     $this->browse(function (Browser $browser) {
         $browser->select('jenis_laporan', 'Publik')
             ->pause(1000)
-            ->type('lokasi_laporan', 'Jl. Contoh')
+            ->type('lokasi', '-6.9298242,107.6349601')
             ->pause(1000)
             ->select('kategori_laporan', 'Jalan Rusak')
             ->pause(1000)

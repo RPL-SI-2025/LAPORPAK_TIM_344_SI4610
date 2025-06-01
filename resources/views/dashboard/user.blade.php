@@ -160,7 +160,7 @@
             <div class="text-block">
               <h2><span class="light-text">PETA</span><br><strong>KONDISI JALAN</strong></h2>
               <div class="underline"></div>
-              <a class="cta-btn" href="#">Baca Lebih Lanjut &gt;</a>
+              <a class="cta-btn" href="{{ route('petakondisi.index') }}">Baca Lebih Lanjut &gt;</a>
             </div>
           </div>
         </div>
@@ -231,52 +231,70 @@
           <div class="col-lg-8">
             <div class="row g-3">
   @php $maxPosts = 6; @endphp
-  @foreach(($recentPosts ?? []) as $idx => $laporan)
+@if(!empty($recentNews) && count($recentNews) > 0)
+  @foreach($recentNews as $idx => $news)
     @if($idx >= $maxPosts) @break @endif
     <div class="col-md-4 d-flex">
-      <a href="{{ route('news.index') }}" class="text-decoration-none w-100">
+      <a href="{{ route('news.show', $news->id) }}" class="text-decoration-none w-100">
         <div class="card bg-dark text-white h-100">
-          <img src="{{ asset('assets/img/news1.jpg') }}" class="card-img" alt="">
+          <img src="{{ $news->gambar ? asset('storage/'.$news->gambar) : asset('assets/img/news1.jpg') }}" class="card-img" alt="{{ $news->judul }}">
           <div class="card-img-overlay d-flex flex-column justify-content-end p-2">
-            <h6 class="card-title fw-bold mb-1" style="font-size:1rem;">Lorem Ipsum Is Simply Dummy Text</h6>
-            <p class="card-text mb-0" style="font-size:0.85rem;"><i class="bi bi-calendar"></i> 27 August, 2024</p>
+            <h6 class="card-title fw-bold mb-1" style="font-size:1rem;">{{ $news->judul }}</h6>
+            <p class="card-text mb-0" style="font-size:0.85rem;"><i class="bi bi-calendar"></i> {{ \Carbon\Carbon::parse($news->tanggal_terbit)->format('d F, Y') }}</p>
           </div>
         </div>
       </a>
     </div>
   @endforeach
-  @if(empty($recentPosts) || count($recentPosts) < $maxPosts)
-    @for($i = (count($recentPosts ?? [])); $i < $maxPosts; $i++)
+  @if(count($recentNews) < $maxPosts)
+    @for($i = count($recentNews); $i < $maxPosts; $i++)
     <div class="col-md-4 d-flex">
-      <a href="{{ route('news.index') }}" class="text-decoration-none w-100">
-        <div class="card bg-dark text-white h-100">
-          <img src="{{ asset('assets/img/news'.($i+1).'.jpg') }}" class="card-img" alt="">
-          <div class="card-img-overlay d-flex flex-column justify-content-end p-2">
-            <h6 class="card-title fw-bold mb-1" style="font-size:1rem;">Lorem Ipsum Is Simply Dummy Text</h6>
-            <p class="card-text mb-0" style="font-size:0.85rem;"><i class="bi bi-calendar"></i> 27 August, 2024</p>
-          </div>
+      <div class="card bg-dark text-white h-100">
+        <img src="{{ asset('assets/img/news'.($i+1).'.jpg') }}" class="card-img" alt="Placeholder">
+        <div class="card-img-overlay d-flex flex-column justify-content-end p-2">
+          <h6 class="card-title fw-bold mb-1" style="font-size:1rem;">Belum ada berita</h6>
+          <p class="card-text mb-0" style="font-size:0.85rem;"><i class="bi bi-calendar"></i> - </p>
         </div>
-      </a>
+      </div>
     </div>
     @endfor
   @endif
+@else
+  @for($i = 0; $i < $maxPosts; $i++)
+  <div class="col-md-4 d-flex">
+    <div class="card bg-dark text-white h-100">
+      <img src="{{ asset('assets/img/news'.($i+1).'.jpg') }}" class="card-img" alt="Placeholder">
+      <div class="card-img-overlay d-flex flex-column justify-content-end p-2">
+        <h6 class="card-title fw-bold mb-1" style="font-size:1rem;">Belum ada berita</h6>
+        <p class="card-text mb-0" style="font-size:0.85rem;"><i class="bi bi-calendar"></i> - </p>
+      </div>
+    </div>
+  </div>
+  @endfor
+@endif
 </div>
           </div>
           <!-- Sidebar News List -->
           <div class="col-lg-4">
             <div class="d-flex justify-content-between mb-2">
-              <span class="badge bg-danger fw-bold">Latest News</span>
-              <button class="btn btn-light btn-sm fw-bold">Featured</button>
+              <span class="badge bg-danger">Berita Terbaru</span>
+              <span class="fw-bold">Pilihan</span>
             </div>
-            @for($i = 0; $i < 4; $i++)
-            <div class="d-flex mb-3 align-items-center">
-              <img src="{{ asset('assets/img/news'.($i+6).'.jpg') }}" width="80" height="60" class="me-2 object-fit-cover rounded" alt="">
-              <div>
-                <p class="mb-1 small fw-bold" style="color:#232b44;">Lorem Ipsum Is Simply Dummy Text</p>
-                <small class="text-muted"><i class="bi bi-calendar"></i> 27 August, 2024</small>
-              </div>
+            <div class="list-group list-group-flush">
+              @if(!empty($recentNews) && count($recentNews) > 0)
+                @foreach($recentNews as $news)
+                  <a href="{{ route('news.show', $news->id) }}" class="list-group-item list-group-item-action d-flex align-items-center gap-3 p-2">
+                    <img src="{{ $news->gambar ? asset('storage/'.$news->gambar) : asset('assets/img/news1.jpg') }}" alt="{{ $news->judul }}" class="rounded" style="width:48px;height:48px;object-fit:cover;">
+                    <div>
+                      <div class="fw-bold" style="font-size:0.95rem;">{{ $news->judul }}</div>
+                      <div class="text-muted" style="font-size:0.85rem;"><i class="bi bi-calendar"></i> {{ \Carbon\Carbon::parse($news->tanggal_terbit)->translatedFormat('d F, Y') }}</div>
+                    </div>
+                  </a>
+                @endforeach
+              @else
+                <div class="list-group-item p-2 text-center text-muted">Belum ada berita</div>
+              @endif
             </div>
-            @endfor
           </div>
         </div>
       </div>

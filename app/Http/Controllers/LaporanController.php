@@ -24,7 +24,7 @@ class LaporanController extends Controller
         $validator = Validator::make($request->all(), [
             'jenis_laporan' => 'required',
             'bukti_laporan' => 'required|file|max:2048',
-            'lokasi_laporan' => 'required',
+            'lokasi' => 'required',
             'ciri_khusus_lokasi' => 'nullable', // Ubah 'optional' menjadi 'nullable'
             'kategori_laporan' => 'required',
             'deskripsi_laporan' => 'required',
@@ -50,7 +50,7 @@ class LaporanController extends Controller
             $laporan = new Laporan();
             $laporan->nomor_laporan = $nomor_laporan;
             $laporan->jenis_laporan = $request->jenis_laporan;
-            $laporan->lokasi_laporan = $request->lokasi_laporan;
+            $laporan->lokasi = $request->lokasi;
             $laporan->ciri_khusus = $request->ciri_khusus_lokasi; // Perbaiki nama field
             $laporan->kategori_laporan = $request->kategori_laporan;
             $laporan->deskripsi_laporan = $request->deskripsi_laporan;
@@ -86,7 +86,9 @@ class LaporanController extends Controller
      */
     public function index(Request $request)
     {
-        $laporans = Laporan::where('user_id', auth()->id())->latest()->get();
+        $laporans = Laporan::where('user_id', auth()->id())
+            ->with(['feedbackAdmin.user', 'feedbackUser.user'])
+            ->latest()->get();
         return view('laporan.history', compact('laporans'));
     }
 
@@ -165,5 +167,55 @@ class LaporanController extends Controller
 
         $laporan->delete();
         return redirect()->route('laporan.index')->with('success', 'Laporan berhasil dihapus!');
+    }
+
+    /**
+     * Simpan feedback dari user untuk laporan tertentu
+     */
+    public function feedbackUser(Request $request, $id)
+    {
+        $laporan = Laporan::where('user_id', auth()->id())->findOrFail($id);
+
+        // Pastikan laporan sudah selesai dan sudah ada feedback admin
+        if ($laporan->status !== 'selesai' || !$laporan->feedbackAdmin) {
+            return redirect()->back()->with('error', 'Feedback hanya dapat diberikan jika laporan sudah selesai dan ada bukti perbaikan dari admin.');
+        }
+
+        // Cek jika sudah ada feedback user
+        if ($laporan->feedbackUser) {
+            return redirect()->back()->with('error', 'Anda sudah memberikan feedback untuk laporan ini.');
+        }
+
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'pesan' => 'required|string',
+        ]);
+
+        $feedback = new \App\Models\Feedback();
+        $feedback->laporan_id = $laporan->id;
+        $feedback->user_id = auth()->id();
+        $feedback->rating = $request->rating;
+        $feedback->pesan = $request->pesan;
+        $feedback->kategori = $laporan->kategori_laporan ?? '-';
+        $feedback->save();
+
+        return redirect()->route('laporan.index')->with('success', 'Feedback berhasil dikirim!');
+    }
+
+    /**
+     * Tampilkan halaman form feedback user (bukan modal)
+     */
+    public function feedbackUserForm($id)
+    {
+        $laporan = Laporan::where('user_id', auth()->id())->findOrFail($id);
+        // Pastikan laporan sudah selesai dan sudah ada feedback admin
+        if ($laporan->status !== 'selesai' || !$laporan->feedbackAdmin) {
+            return redirect()->back()->with('error', 'Feedback hanya dapat diberikan jika laporan sudah selesai dan ada bukti perbaikan dari admin.');
+        }
+        // Cek jika sudah ada feedback user
+        if ($laporan->feedbackUser) {
+            return redirect()->back()->with('error', 'Anda sudah memberikan feedback untuk laporan ini.');
+        }
+        return view('laporan.feedback_user_form', compact('laporan'));
     }
 }

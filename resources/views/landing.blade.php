@@ -79,6 +79,8 @@
 
       <img src="{{ asset('assets/img/dashboard-1.png') }}" alt="" class="landing-bg" data-aos="fade-in">
 
+
+
       <section class="min-vh-100 d-flex align-items-center" style="background: url('{{ asset('assets/img/your-background-image.jpg') }}') center center / cover no-repeat;">
         <div class="container">
           <div class="row gy-4 d-flex justify-content-between">
@@ -207,7 +209,7 @@
             <div class="text-block">
               <h2><span class="light-text">PETA</span><br><strong>KONDISI JALAN</strong></h2>
               <div class="underline"></div>
-              <a class="cta-btn" href="#">Baca Lebih Lanjut &gt;</a>
+              <a class="cta-btn" href="{{ route('petakondisi.index') }}">Baca Lebih Lanjut &gt;</a>
             </div>
           </div>
         </div>

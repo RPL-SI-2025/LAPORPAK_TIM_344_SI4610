@@ -1,5 +1,7 @@
 @extends('layouts.adminlayout')
 
+@php $selectedLaporanId = $selectedLaporanId ?? null; @endphp
+
 @section('title', 'Tambah Bukti Feedback')
 
 @section('content')
@@ -59,8 +61,12 @@
                     <small class="text-muted">Format yang diizinkan: JPG, JPEG, PNG, PDF. Ukuran maksimal: 2MB</small>
                 </div>
 
+                <!-- Input User ID (otomatis dari admin yang login) -->
+                <input type="hidden" name="user_id" value="{{ auth()->user()->id }}">
+
+
                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <button type="submit" class="btn btn-primary">Simpan</button>
+                    <button type="submit" class="btn btn-primary">Kirim</button>
                 </div>
             </form>
         </div>

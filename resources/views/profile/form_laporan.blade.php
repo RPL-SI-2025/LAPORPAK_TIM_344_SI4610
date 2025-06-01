@@ -247,9 +247,10 @@
             </div>
 
             <div class="form-group">
-                <label for="lokasi_laporan">Lokasi Laporan <span class="required">*</span></label>
+                <label for="lokasi">Lokasi Laporan <span class="required">*</span></label>
                 <div class="input-group">
-                    <input type="text" class="form-control" id="lokasi_laporan" name="lokasi_laporan" placeholder="Ketik disini">
+                    <input type="text" class="form-control" id="lokasi" placeholder="Cari alamat atau klik peta" autocomplete="off">
+<input type="hidden" id="lokasi_hidden" name="lokasi" />
                     <div class="input-group-append">
                         <button type="button" class="btn btn-outline-secondary" id="btn-lokasi-saya" title="Dapatkan Lokasi Saya">
                             <span class="d-none d-md-inline">Lokasi Saya</span>
@@ -259,7 +260,7 @@
                         </button>
                     </div>
                 </div>
-                <div id="lokasi_laporan_error" class="error-message"></div>
+                <div id="lokasi_error" class="error-message"></div>
                 <div id="map" style="height: 200px;"></div>
             </div>
 
@@ -313,45 +314,94 @@
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: ' OpenStreetMap contributors'
             }).addTo(map);
-            marker = L.marker([-6.9032739, 107.5731165], {draggable: false}).addTo(map);
+            marker = L.marker([-6.9032739, 107.5731165], {draggable: true}).addTo(map);
+
+// Event klik di peta
+map.on('click', function(e) {
+    marker.setLatLng(e.latlng);
+    $('#lokasi_hidden').val(e.latlng.lat + ',' + e.latlng.lng);
+$('#preview_koordinat').text('Koordinat: ' + e.latlng.lat + ',' + e.latlng.lng);
+});
+// Event drag marker
+marker.on('dragend', function(e) {
+    var pos = marker.getLatLng();
+    $('#lokasi_hidden').val(pos.lat + ',' + pos.lng);
+$('#preview_koordinat').text('Koordinat: ' + pos.lat + ',' + pos.lng);
+});
 
             // Autocomplete lokasi dengan jQuery UI + Nominatim
-            $('#lokasi_laporan').autocomplete({
-                minLength: 2,
-                source: function(request, response) {
-                    $.ajax({
-                        url: 'https://nominatim.openstreetmap.org/search',
-                        data: {
-                            q: request.term,
-                            format: 'json',
-                            addressdetails: 1,
-                            limit: 5
-                        },
-                        success: function(data) {
-                            response($.map(data, function(item) {
-                                return {
-                                    label: item.display_name,
-                                    value: item.display_name,
-                                    lat: item.lat,
-                                    lon: item.lon
-                                };
-                            }));
-                        },
-                        error: function(xhr, status, error) {
-                            console.log('Nominatim error:', error);
-                            response([]);
-                        }
-                    });
-                },
-                select: function(event, ui) {
-                    var latlng = [parseFloat(ui.item.lat), parseFloat(ui.item.lon)];
-                    marker.setLatLng(latlng);
-                    map.setView(latlng, 16);
+            $('#lokasi').autocomplete({
+    minLength: 2,
+    source: function(request, response) {
+        $.ajax({
+            url: 'https://nominatim.openstreetmap.org/search',
+            data: {
+                q: request.term,
+                format: 'json',
+                addressdetails: 1,
+                limit: 5
+            },
+            success: function(data) {
+                response($.map(data, function(item) {
+                    return {
+                        label: item.display_name,
+                        value: item.display_name,
+                        lat: item.lat,
+                        lon: item.lon
+                    };
+                }));
+            },
+            error: function(xhr, status, error) {
+                console.log('Nominatim error:', error);
+                response([]);
+            }
+        });
+    },
+    select: function(event, ui) {
+        var latlng = [parseFloat(ui.item.lat), parseFloat(ui.item.lon)];
+        marker.setLatLng(latlng);
+        map.setView(latlng, 16);
+        // Set hidden koordinat
+        $('#lokasi_hidden').val(latlng.join(','));
+$('#preview_koordinat').text('Koordinat: ' + latlng.join(','));
+    }
+});
+
+// Jika user mengetik dan tekan Enter di kolom lokasi, lakukan pencarian Nominatim otomatis
+$('#lokasi').on('keydown', function(e) {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        var query = $(this).val();
+        if (query.length < 2) return;
+        $.ajax({
+            url: 'https://nominatim.openstreetmap.org/search',
+            data: {
+                q: query,
+                format: 'json',
+                addressdetails: 1,
+                limit: 1
+            },
+            success: function(data) {
+                if (data && data.length > 0) {
+                    var lat = parseFloat(data[0].lat);
+                    var lon = parseFloat(data[0].lon);
+                    marker.setLatLng([lat, lon]);
+                    map.setView([lat, lon], 16);
+                    $('#lokasi_hidden').val(lat + ',' + lon);
+$('#preview_koordinat').text('Koordinat: ' + lat + ',' + lon);
+                } else {
+                    $('#lokasi_error').text('Lokasi tidak ditemukan, coba nama jalan/lokasi lain.');
                 }
-            });
+            },
+            error: function() {
+                $('#lokasi_error').text('Terjadi kesalahan saat mencari lokasi.');
+            }
+        });
+    }
+});
 
             // Jika field lokasi diisi manual koordinat
-            $('#lokasi_laporan').on('change', function() {
+            $('#lokasi').on('change', function() {
                 var val = $(this).val();
                 var coordMatch = val.match(/^(-?\d+\.\d+),\s*(-?\d+\.\d+)$/);
                 if (coordMatch) {
@@ -365,7 +415,7 @@
                         .then(res => res.json())
                         .then(data => {
                             if (data.display_name) {
-                                $('#lokasi_laporan').val(data.display_name);
+                                $('#lokasi').val(data.display_name);
                             }
                         });
                 }
@@ -385,10 +435,13 @@
                         map.setView(latlng, 16);
                         // Reverse geocoding ke alamat
                         fetch(`https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lng}`)
-                            .then(res => res.json())
-                            .then(data => {
-                                $('#lokasi_laporan').val(data.display_name || (lat + ', ' + lng));
-                            });
+    .then(res => res.json())
+    .then(data => {
+        $('#lokasi').val(data.display_name || (lat + ', ' + lng));
+        // Set hidden koordinat
+        $('#lokasi_hidden').val(lat + ',' + lng);
+$('#preview_koordinat').text('Koordinat: ' + lat + ',' + lng);
+    });
                         btn.prop('disabled', false).html(oldText);
                     }, function(error) {
                         btn.prop('disabled', false).html(oldText);
@@ -401,20 +454,41 @@
                 // Hilangkan required HTML agar browser tidak pakai pesan default
                 $('#jenis_laporan').removeAttr('required');
                 $('#bukti_laporan').removeAttr('required');
-                $('#lokasi_laporan').removeAttr('required');
+                $('#lokasi').removeAttr('required');
                 $('#kategori_laporan').removeAttr('required');
                 $('#deskripsi_laporan').removeAttr('required');
                 $('#ceklis').removeAttr('required');
 
                 $('#laporanForm').submit(function(e) {
-                    e.preventDefault();
+    e.preventDefault();
 
-                    var jenis_laporan = $('#jenis_laporan').val();
-                    var bukti_laporan = $('#bukti_laporan').val();
-                    var lokasi_laporan = $('#lokasi_laporan').val();
-                    var kategori_laporan = $('#kategori_laporan').val();
-                    var deskripsi_laporan = $('#deskripsi_laporan').val();
-                    var ceklis = $('#ceklis').is(':checked');
+    var jenis_laporan = $('#jenis_laporan').val();
+    var bukti_laporan = $('#bukti_laporan').val();
+    // Ambil koordinat dari hidden input
+    var lokasi = $('#lokasi_hidden').val();
+    var kategori_laporan = $('#kategori_laporan').val();
+    var deskripsi_laporan = $('#deskripsi_laporan').val();
+    var ceklis = $('#ceklis').is(':checked');
+
+    // Fallback: jika hidden koordinat belum terisi tapi marker sudah berpindah, ambil posisi marker
+    if (!lokasi || !/^(-?\d+\.\d+),\s*(-?\d+\.\d+)$/.test(lokasi)) {
+        if (typeof marker !== 'undefined') {
+            var pos = marker.getLatLng();
+            if (pos && pos.lat && pos.lng) {
+                lokasi = pos.lat + ',' + pos.lng;
+                $('#lokasi_hidden').val(lokasi);
+            }
+        }
+    }
+
+    // Validasi koordinat harus terisi
+    if (!lokasi || !/^(-?\d+\.\d+),\s*(-?\d+\.\d+)$/.test(lokasi)) {
+        $('#lokasi_error').text('Silakan pilih lokasi di peta atau autocomplete, lalu pastikan pin sudah muncul.');
+        Swal.fire({icon:'error',title:'Peringatan',text:'Lokasi koordinat wajib diisi!'});
+        return;
+    } else {
+        $('#lokasi_error').text('');
+    }
 
                     $('.error-message').text('');
 
@@ -434,7 +508,7 @@
                         });
                     }
 
-                    if (!bukti_laporan && !jenis_laporan && !lokasi_laporan && !kategori_laporan && !deskripsi_laporan && !ceklis) {
+                    if (!bukti_laporan && !jenis_laporan && !lokasi && !kategori_laporan && !deskripsi_laporan && !ceklis) {
                         showPopup('Tidak Dapat Mengirimkan Laporan Kosong');
                         return false;
                     }
@@ -443,10 +517,10 @@
                         showPopup('Lengkapi Bukti Kerusakan');
                         return false;
                     }
-                    if (!jenis_laporan || !lokasi_laporan || !kategori_laporan || !deskripsi_laporan) {
+                    if (!jenis_laporan || !lokasi || !kategori_laporan || !deskripsi_laporan) {
                         showPopup('Lengkapi Kolom yang Kosong');
                         if (!jenis_laporan) $('#jenis_laporan_error').text('Kolom wajib diisi');
-                        if (!lokasi_laporan) $('#lokasi_laporan_error').text('Kolom wajib diisi');
+                        if (!lokasi) $('#lokasi_error').text('Kolom wajib diisi');
                         if (!kategori_laporan) $('#kategori_laporan_error').text('Kolom wajib diisi');
                         if (!deskripsi_laporan) $('#deskripsi_laporan_error').text('Kolom wajib diisi');
                         return false;
@@ -511,9 +585,9 @@
                             // Reverse geocode ke alamat
                             geocoder.geocode({ location: latlng }, function(results, status) {
                                 if (status === 'OK' && results[0]) {
-                                    $('#lokasi_laporan').val(results[0].formatted_address);
+                                    $('#lokasi').val(results[0].formatted_address);
                                 } else {
-                                    $('#lokasi_laporan').val(lat + ', ' + lng);
+                                    $('#lokasi').val(lat + ', ' + lng);
                                 }
                             });
                             // Update map dan marker
@@ -530,7 +604,7 @@
                 });
 
                 // Update marker & map jika field lokasi diisi manual koordinat
-                $('#lokasi_laporan').on('change', function() {
+                $('#lokasi').on('change', function() {
                     var val = $(this).val();
                     // Jika input berupa koordinat
                     var coordMatch = val.match(/^(-?\d+\.\d+),\s*(-?\d+\.\d+)$/);

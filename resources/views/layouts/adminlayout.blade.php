@@ -188,15 +188,4 @@
 @stack('scripts')
 </body>
 </html>
-  // Tutup dropdown jika klik di luar sidebar
-  document.addEventListener('click', function(e){
-    if(!e.target.closest('.sidebar')) {
-      document.querySelectorAll('.sidebar .dropdown-menu.show').forEach(function(openMenu){
-        openMenu.classList.remove('show');
-      });
-    }
-  });
-});
-</script>
-</body>
 </html>

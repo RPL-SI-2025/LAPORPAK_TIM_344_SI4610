@@ -30,10 +30,11 @@ class FeedbackController extends Controller
     /**
      * Show the form for creating a new feedback (opsional, jika admin ingin menambah manual)
      */
-    public function create()
+    public function create(Request $request)
     {
         $laporans = Laporan::all();
-        return view('admin.feedback.create', compact('laporans'));
+        $selectedLaporanId = $request->laporan_id ?? null;
+        return view('admin.feedback.create', compact('laporans', 'selectedLaporanId'));
     }
 
     /**
@@ -44,10 +45,27 @@ class FeedbackController extends Controller
         $request->validate([
             'laporan_id' => 'required|exists:laporans,id',
             'user_id' => 'required|exists:users,id',
-            'rating' => 'required|integer|min:1|max:5',
-            'pesan' => 'required|string',
+            'file_proof' => 'required|file|mimes:jpg,jpeg,png,pdf|max:2048',
         ]);
-        Feedback::create($request->all());
+        // Ambil kategori dari laporan terkait
+        $laporan = Laporan::findOrFail($request->laporan_id);
+        $data = $request->only(['laporan_id', 'user_id']);
+        $data['kategori'] = $laporan->kategori;
+        // Simpan file bukti
+        if ($request->hasFile('file_proof')) {
+            $file = $request->file('file_proof');
+            $path = $file->store('feedback_proof', 'public');
+            $data['feedback_file'] = $path;
+        }
+        // Pastikan kolom rating, pesan, saran diisi null agar tidak error
+        $data['rating'] = null;
+        $data['pesan'] = null;
+        $data['saran'] = null;
+        $feedback = Feedback::create($data);
+        // Kirim notifikasi ke user pelapor agar mengisi feedback user
+        if ($laporan->user) {
+            $laporan->user->notify(new \App\Notifications\FeedbackUserRequest($laporan));
+        }
         return redirect()->route('admin.feedback.index')->with('success', 'Feedback berhasil ditambahkan!');
     }
 

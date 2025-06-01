@@ -30,7 +30,7 @@ class LaporanPublikController extends Controller
         $request->validate([
             'jenis_laporan' => 'required|in:Privat,Publik',
             'bukti_laporan' => 'required|file|mimes:jpg,jpeg,png,mp4|max:10240', // max 10MB
-            'lokasi_laporan' => 'required|string|max:255',
+            'lokasi' => 'required|string|max:255',
             'kategori_laporan' => 'required|in:Jalan Rusak,Jembatan Rusak,Banjir',
             'deskripsi_laporan' => 'required|string|max:1000',
             'ceklis' => 'required|accepted',
@@ -47,7 +47,7 @@ class LaporanPublikController extends Controller
         $laporan->user_id = Auth::id(); // optional jika ada user login
         $laporan->jenis_laporan = $request->jenis_laporan;
         $laporan->bukti_laporan = $filePath;
-        $laporan->lokasi = $request->lokasi_laporan;
+        $laporan->lokasi = $request->lokasi;
         $laporan->ciri_khusus = $request->ciri_khusus_lokasi ?? null;
         $laporan->kategori = $request->kategori_laporan;
         $laporan->deskripsi = $request->deskripsi_laporan;

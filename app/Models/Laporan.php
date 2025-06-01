@@ -13,7 +13,7 @@ class Laporan extends Model
     protected $fillable = [
         'jenis_laporan',
         'bukti_laporan',
-        'lokasi_laporan',
+        'lokasi',
         'ciri_khusus',
         'kategori_laporan',
         'deskripsi_laporan',
@@ -31,6 +31,18 @@ class Laporan extends Model
     public function laporanPetugas()
     {
         return $this->hasMany(\App\Models\LaporanPetugas::class, 'laporan_id', 'id');
+    }
+
+    // Relasi ke feedback admin (feedback yang diinput admin)
+    public function feedbackAdmin()
+    {
+        return $this->hasOne(\App\Models\Feedback::class, 'laporan_id')->whereHas('user', function($q){ $q->where('role', 'admin'); });
+    }
+
+    // Relasi ke feedback user (feedback yang diinput user/pelapor)
+    public function feedbackUser()
+    {
+        return $this->hasOne(\App\Models\Feedback::class, 'laporan_id')->whereHas('user', function($q){ $q->where('role', 'user'); });
     }
 
     // Relasi ke feedback (hasOne)

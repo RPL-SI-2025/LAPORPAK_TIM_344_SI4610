@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Laporan;
+use App\Models\Berita;
 use Carbon\Carbon;
 
 class DashboardController extends Controller
@@ -54,6 +55,8 @@ class DashboardController extends Controller
         $ditindaklanjuti = Laporan::where('status', 'ditindaklanjuti')->count();
         $ditanggapi = Laporan::where('status', 'ditanggapi')->count();
         $selesai = Laporan::where('status', 'selesai')->count();
+        // Ambil 6 berita terbaru yang statusnya publish
+        $recentNews = Berita::where('status', 'publish')->latest('tanggal_terbit')->take(6)->get();
         // Ambil 6 laporan terbaru
         $recentPosts = Laporan::latest()->take(6)->get();
         return view('dashboard.user', compact(
@@ -65,7 +68,8 @@ class DashboardController extends Controller
             'ditindaklanjuti',
             'ditanggapi',
             'selesai',
-            'recentPosts')
-        );
+            'recentPosts',
+            'recentNews'
+        ));
     }
 }

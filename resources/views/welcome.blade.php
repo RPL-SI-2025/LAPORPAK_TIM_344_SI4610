@@ -6,6 +6,12 @@
 
         <title>Laravel</title>
 
+<!-- Link ke Peta Kondisi Jalan -->
+<div style="text-align:center; margin-top: 30px;">
+    <a href="{{ route('petakondisi.index') }}" style="display:inline-block; padding:14px 28px; background:#007BFF; color:#fff; border-radius:8px; font-size:18px; text-decoration:none; margin-top:20px; font-weight:bold; box-shadow:0 2px 8px rgba(0,0,0,0.08)">Baca Lebih Lanjut: Peta Kondisi Jalan</a>
+</div>
+
+
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
         <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />

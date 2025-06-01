@@ -73,6 +73,11 @@ class LaporanController extends Controller
         $laporan->status = $request->status;
         $laporan->save();
 
+        // Kirim notifikasi ke user pelapor
+        if ($laporan->user) {
+            $laporan->user->notify(new \App\Notifications\LaporanStatusUpdated($laporan));
+        }
+
         // Sinkronkan status ke complaint jika ada relasi nomor laporan
         $complaint = \App\Models\Complaint::where('name', $laporan->nomor_laporan)->first();
         if ($complaint) {
