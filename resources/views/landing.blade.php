@@ -294,7 +294,7 @@
     </section>
 
     <!-- Kategori Laporan Section -->
-    <section id="kategori" class="min-vh-100 d-flex align-items-center position-relative overflow-hidden">
+    {{-- <section id="kategori" class="min-vh-100 d-flex align-items-center position-relative overflow-hidden">
   
       <!-- Gambar Background -->
       <img src="{{ asset('assets/img/dashboard-3.png') }}" alt=""
@@ -333,7 +333,7 @@
           </div>
         </div>
       </div>
-    </section>    
+    </section>     --}}
    <!-- /Kategori Laporan Section -->
 
 

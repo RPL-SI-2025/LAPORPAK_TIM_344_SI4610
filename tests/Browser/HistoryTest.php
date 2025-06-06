@@ -99,6 +99,36 @@ class TrackReportTest extends DuskTestCase
     }
 
     /** @test
+     * @group updateKosong
+     */
+    public function update_laporan_kosong()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit('/login')
+                ->waitFor('input[name=email]', 5)
+                ->type('email', 'test@example.com')
+                ->type('password', 'test12345')
+                ->press('Masuk')
+                ->pause(1500)
+                ->visit('/laporan')
+                ->assertSee('Laporan Saya')
+                ->pause(1000);
+            $browser->click('a.btn-edit-custom')
+                ->pause(1000)
+                ->assertSee('Edit Laporan')
+                ->pause(1000)
+                ->type('lokasi', '')
+                ->pause(1000)
+                ->type('deskripsi', '')
+                ->pause(1200)
+                ->press('Update')
+                ->pause(1200)
+                ->assertSee('Lengkapi Kolom yang Kosong')
+                ->pause(1200);
+        });
+    }
+
+    /** @test
      * @group hapus
      */
     public function hapus_laporan()

@@ -105,6 +105,7 @@
                         <th style="width:50px">No</th>
                         <th>Nomor Laporan</th>
                         <th>Tanggal</th>
+                        <th>Kategori</th>
                         <th style="width:120px">Aksi</th>
                     </tr>
                 </thead>
@@ -114,6 +115,7 @@
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $laporan->nomor_laporan }}</td>
                         <td>{{ $laporan->created_at->format('d-m-Y') }}</td>
+                        <td>{{ $laporan->kategori }}</td>
                         <td>
     <div class="d-flex justify-content-center align-items-center gap-1 flex-nowrap">
         <a href="{{ route('laporan.show', $laporan->id) }}" class="btn btn-navy btn-sm" title="Lihat"><i class="fa fa-eye"></i></a>
